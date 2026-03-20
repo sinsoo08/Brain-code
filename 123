@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>뇌 훈련 게임</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: sans-serif;
+            background: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        h2 {
+            margin-bottom: 8px;
+        }
+        
+        p {
+            margin: 6px 0;
+        }
+        
+        canvas {
+            border: 2px solid #333;
+            margin-top: 20px;
+            background: #fff;
+        }
+        
+        #previewWrap {
+            margin-top: 20px;
+        }
+        
+        #preview {
+            width: 300px;
+            border: 2px solid #333;
+            display: none;
+        }
+        
+        button {
+            padding: 10px 18px;
+            font-size: 16px;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2 id="title">🧠 마우스를 올리면 뇌 이름 + 클릭하면 게임 시작</h2>
+    <p id="brainName">현재 위치: 없음</p>
+    <p id="coords">좌표: (0, 0)</p>
+
+    <canvas id="brainCanvas" width="1200" height="700"></canvas>
+    <br>
+    <button id="homeBtn" style="display:none;">처음으로</button>
+
+    <div id="previewWrap">
+        <img id="preview" alt="부위 확대 미리보기">
+    </div>
+
+    <script>
+        const canvas = document.getElementById("brainCanvas");
+        const ctx = canvas.getContext("2d");
+        const titleText = document.getElementById("title");
+        const brainText = document.getElementById("brainName");
+        const coordsText = document.getElementById("coords");
+        const preview = document.getElementById("preview");
+        const homeBtn = document.getElementById("homeBtn");
+
+        const img = new Image();
+        img.src = "뇌.png";
+
+        const scale = 1.3;
+        let imgX = 0;
+        let imgY = 0;
+        let imgW = 0;
+        let imgH = 0;
+
+        let mode = "map";
+        let currentRegion = "";
+        let gameClickable = false;
+        let gameData = null;
+        let gameTimer = null;
+
+        // ===== 좌표 데이터 =====
+        const frontal = [
+            [365, 401],
+            [343, 371],
+            [328, 344],
+            [335, 322],
+            [330, 306],
+            [328, 290],
+            [338, 241],
+            [356, 207],
+            [382, 180],
+            [405, 155],
+            [435, 142],
+            [454, 131],
+            [488, 109],
+            [524, 94],
+            [550, 96],
+            [569, 85],
+            [585, 83],
+            [607, 85],
+            [637, 80],
+            [658, 83],
+            [674, 87],
+            [685, 107],
+            [685, 125],
+            [672, 142],
+            [651, 161],
+            [635, 182],
+            [615, 206],
+            [615, 239],
+            [615, 295],
+            [615, 319],
+            [594, 330],
+            [565, 333],
+            [537, 347],
+            [511, 365],
+            [492, 387],
+            [475, 408],
+            [468, 432],
+            [408, 427],
+            [365, 405]
+        ];
+
+        const parietal = [
+            [618, 317],
+            [618, 221],
+            [636, 177],
+            [682, 137],
+            [688, 97],
+            [715, 86],
+            [745, 94],
+            [833, 131],
+            [861, 158],
+            [868, 177],
+            [884, 185],
+            [903, 199],
+            [909, 221],
+            [912, 244],
+            [901, 253],
+            [890, 261],
+            [882, 280],
+            [872, 301],
+            [830, 342],
+            [804, 331],
+            [780, 323],
+            [755, 304],
+            [728, 285],
+            [694, 285],
+            [661, 296],
+            [618, 315]
+        ];
+
+        const hippocampus = [
+            [720, 291],
+            [664, 296],
+            [634, 310],
+            [610, 323],
+            [572, 334],
+            [543, 336],
+            [511, 364],
+            [478, 401],
+            [473, 427],
+            [478, 450],
+            [496, 474],
+            [521, 487],
+            [548, 497],
+            [577, 501],
+            [612, 492],
+            [650, 474],
+            [685, 461],
+            [717, 452],
+            [744, 449],
+            [782, 441],
+            [825, 431],
+            [831, 409],
+            [836, 380],
+            [834, 347],
+            [812, 336],
+            [788, 331],
+            [769, 317],
+            [753, 307],
+            [737, 291],
+            [725, 288]
+        ];
+
+        const occipital = [
+            [815, 437],
+            [831, 414],
+            [834, 388],
+            [834, 369],
+            [834, 353],
+            [831, 340],
+            [849, 328],
+            [865, 315],
+            [871, 302],
+            [884, 272],
+            [898, 251],
+            [914, 245],
+            [935, 253],
+            [935, 272],
+            [946, 291],
+            [955, 307],
+            [960, 328],
+            [965, 355],
+            [965, 393],
+            [952, 425],
+            [933, 447],
+            [908, 455],
+            [874, 450],
+            [839, 441],
+            [818, 436]
+        ];
+
+        const cerebellum = [
+            [812, 435],
+            [898, 460],
+            [908, 481],
+            [898, 507],
+            [888, 521],
+            [877, 541],
+            [861, 548],
+            [855, 554],
+            [849, 556],
+            [831, 559],
+            [823, 559],
+            [812, 557],
+            [807, 557],
+            [804, 561],
+            [793, 570],
+            [775, 570],
+            [764, 567],
+            [758, 567],
+            [771, 602],
+            [771, 613],
+            [764, 613],
+            [745, 618],
+            [732, 607],
+            [723, 591],
+            [710, 577],
+            [695, 559],
+            [683, 546],
+            [677, 529],
+            [663, 521],
+            [651, 514],
+            [640, 500],
+            [632, 476],
+            [663, 465],
+            [685, 457],
+            [704, 454],
+            [728, 448],
+            [733, 446],
+            [744, 444],
+            [760, 441],
+            [776, 441],
+            [803, 438],
+            [812, 435]
+        ];
+
+        // ===== 공통 =====
+        function isPointInPolygon(x, y, polygon) {
+            let inside = false;
+            for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+                const xi = polygon[i][0],
+                    yi = polygon[i][1];
+                const xj = polygon[j][0],
+                    yj = polygon[j][1];
+                const intersect =
+                    ((yi > y) !== (yj > y)) &&
+                    (x < ((xj - xi) * (y - yi)) / (yj - yi) + xi);
+                if (intersect) inside = !inside;
+            }
+            return inside;
+        }
+
+        function getRegionName(x, y) {
+            if (x < 0 || x > img.width || y < 0 || y > img.height) return "";
+
+            if (isPointInPolygon(x, y, frontal)) return "전두엽";
+            if (isPointInPolygon(x, y, parietal)) return "두정엽";
+            if (isPointInPolygon(x, y, hippocampus)) return "해마";
+            if (isPointInPolygon(x, y, occipital)) return "후두엽";
+            if (isPointInPolygon(x, y, cerebellum)) return "소뇌";
+
+            return "";
+        }
+
+        function getPreviewSrc(region) {
+            if (region === "전두엽") return "전두엽.png";
+            if (region === "두정엽") return "두정엽.png";
+            if (region === "해마") return "해마.png";
+            if (region === "후두엽") return "후두엽.png";
+            if (region === "소뇌") return "소뇌.png";
+            return "";
+        }
+
+        function clearGameTimer() {
+            if (gameTimer) {
+                clearTimeout(gameTimer);
+                gameTimer = null;
+            }
+        }
+
+        function goHome() {
+            clearGameTimer();
+            mode = "map";
+            currentRegion = "";
+            gameClickable = false;
+            gameData = null;
+            titleText.textContent = "🧠 마우스를 올리면 뇌 이름 + 클릭하면 게임 시작";
+            brainText.textContent = "현재 위치: 없음";
+            coordsText.textContent = "좌표: (0, 0)";
+            preview.style.display = "none";
+            homeBtn.style.display = "none";
+            drawMap();
+        }
+
+        homeBtn.addEventListener("click", goHome);
+
+        // ===== 지도 화면 =====
+        function drawMap(mouseX = null, mouseY = null) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, imgX, imgY, imgW, imgH);
+
+            if (mouseX !== null && mouseY !== null) {
+                ctx.strokeStyle = "blue";
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(mouseX, mouseY, 10, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+        }
+
+        // ===== 게임들 =====
+        function startFrontalGame() {
+            mode = "game";
+            currentRegion = "전두엽";
+            homeBtn.style.display = "inline-block";
+            preview.style.display = "none";
+            titleText.textContent = "🟥 전두엽 게임: 가장 큰 숫자를 클릭하세요";
+            brainText.textContent = "현재 위치: 전두엽 게임";
+            coordsText.textContent = "좌표: -";
+
+            const nums = [3, 7, 5];
+            const boxes = [{
+                x: 250,
+                y: 220,
+                w: 100,
+                h: 100,
+                value: nums[0]
+            }, {
+                x: 500,
+                y: 220,
+                w: 100,
+                h: 100,
+                value: nums[1]
+            }, {
+                x: 750,
+                y: 220,
+                w: 100,
+                h: 100,
+                value: nums[2]
+            }];
+            gameData = {
+                boxes,
+                answer: 7
+            };
+            drawFrontalGame();
+        }
+
+        function drawFrontalGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.font = "80px Arial";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+
+            for (const box of gameData.boxes) {
+                ctx.strokeStyle = "#333";
+                ctx.lineWidth = 2;
+                ctx.strokeRect(box.x, box.y, box.w, box.h);
+                ctx.fillStyle = "black";
+                ctx.fillText(String(box.value), box.x + box.w / 2, box.y + box.h / 2 + 5);
+            }
+        }
+
+        function startParietalGame() {
+            mode = "game";
+            currentRegion = "두정엽";
+            homeBtn.style.display = "inline-block";
+            preview.style.display = "none";
+            titleText.textContent = "🟨 두정엽 게임: 같은 모양 2개를 찾으세요";
+            brainText.textContent = "현재 위치: 두정엽 게임";
+            coordsText.textContent = "좌표: -";
+
+            gameData = {
+                targets: [{
+                    type: "square",
+                    x: 250,
+                    y: 250,
+                    size: 90
+                }, {
+                    type: "circle",
+                    x: 550,
+                    y: 295,
+                    size: 45
+                }, {
+                    type: "square",
+                    x: 850,
+                    y: 250,
+                    size: 90
+                }]
+            };
+            drawParietalGame();
+        }
+
+        function drawParietalGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#333";
+
+            for (const item of gameData.targets) {
+                if (item.type === "square") {
+                    ctx.fillRect(item.x, item.y, item.size, item.size);
+                } else if (item.type === "circle") {
+                    ctx.beginPath();
+                    ctx.arc(item.x, item.y, item.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+        }
+
+        function startOccipitalGame() {
+            mode = "game";
+            currentRegion = "후두엽";
+            homeBtn.style.display = "inline-block";
+            preview.style.display = "none";
+            titleText.textContent = "🟦 후두엽 게임: 빨간색을 클릭하세요";
+            brainText.textContent = "현재 위치: 후두엽 게임";
+            coordsText.textContent = "좌표: -";
+
+            gameData = {
+                boxes: [{
+                    x: 250,
+                    y: 220,
+                    w: 120,
+                    h: 120,
+                    color: "blue"
+                }, {
+                    x: 500,
+                    y: 220,
+                    w: 120,
+                    h: 120,
+                    color: "red"
+                }, {
+                    x: 750,
+                    y: 220,
+                    w: 120,
+                    h: 120,
+                    color: "green"
+                }]
+            };
+            drawOccipitalGame();
+        }
+
+        function drawOccipitalGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (const box of gameData.boxes) {
+                ctx.fillStyle = box.color;
+                ctx.fillRect(box.x, box.y, box.w, box.h);
+            }
+        }
+
+        function startCerebellumGame() {
+            mode = "game";
+            currentRegion = "소뇌";
+            homeBtn.style.display = "inline-block";
+            preview.style.display = "none";
+            titleText.textContent = "🟩 소뇌 게임: 도형이 나오면 빠르게 클릭하세요";
+            brainText.textContent = "현재 위치: 소뇌 게임";
+            coordsText.textContent = "잠시 기다리세요...";
+
+            gameClickable = false;
+            gameData = {
+                box: null,
+                startTime: 0
+            };
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.font = "40px Arial";
+            ctx.fillStyle = "black";
+            ctx.textAlign = "center";
+            ctx.fillText("기다리세요...", canvas.width / 2, canvas.height / 2);
+
+            gameTimer = setTimeout(() => {
+                gameData.box = {
+                    x: 520,
+                    y: 240,
+                    w: 160,
+                    h: 160
+                };
+                gameData.startTime = Date.now();
+                gameClickable = true;
+                coordsText.textContent = "좌표: -";
+                drawCerebellumGame();
+            }, Math.random() * 2000 + 1000);
+        }
+
+        function drawCerebellumGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "orange";
+            ctx.fillRect(gameData.box.x, gameData.box.y, gameData.box.w, gameData.box.h);
+        }
+
+        function startHippocampusGame() {
+            mode = "game";
+            currentRegion = "해마";
+            homeBtn.style.display = "inline-block";
+            preview.style.display = "none";
+            titleText.textContent = "🟪 해마 게임: 숫자 순서를 기억하세요";
+            brainText.textContent = "현재 위치: 해마 게임";
+            coordsText.textContent = "순서를 보는 중...";
+
+            gameData = {
+                sequence: [1, 2, 3],
+                buttons: [{
+                    num: 1,
+                    x: 300,
+                    y: 350,
+                    w: 120,
+                    h: 120
+                }, {
+                    num: 2,
+                    x: 540,
+                    y: 350,
+                    w: 120,
+                    h: 120
+                }, {
+                    num: 3,
+                    x: 780,
+                    y: 350,
+                    w: 120,
+                    h: 120
+                }],
+                step: 0,
+                canClick: false
+            };
+
+            showHippocampusSequence(0);
+        }
+
+        function showHippocampusSequence(index) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (index < gameData.sequence.length) {
+                ctx.font = "140px Arial";
+                ctx.fillStyle = "black";
+                ctx.textAlign = "center";
+                ctx.fillText(String(gameData.sequence[index]), canvas.width / 2, canvas.height / 2);
+
+                gameTimer = setTimeout(() => {
+                    showHippocampusSequence(index + 1);
+                }, 700);
+            } else {
+                drawHippocampusButtons();
+                gameData.canClick = true;
+                coordsText.textContent = "순서대로 1 → 2 → 3 클릭";
+            }
+        }
+
+        function drawHippocampusButtons() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.font = "70px Arial";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+
+            for (const btn of gameData.buttons) {
+                ctx.strokeStyle = "#333";
+                ctx.lineWidth = 2;
+                ctx.strokeRect(btn.x, btn.y, btn.w, btn.h);
+                ctx.fillStyle = "black";
+                ctx.fillText(String(btn.num), btn.x + btn.w / 2, btn.y + btn.h / 2 + 5);
+            }
+        }
+
+        function startRegionGame(region) {
+            if (region === "전두엽") startFrontalGame();
+            else if (region === "두정엽") startParietalGame();
+            else if (region === "해마") startHippocampusGame();
+            else if (region === "후두엽") startOccipitalGame();
+            else if (region === "소뇌") startCerebellumGame();
+        }
+
+        // ===== 이벤트 =====
+        img.onload = () => {
+            imgW = img.width * scale;
+            imgH = img.height * scale;
+            imgX = (canvas.width - imgW) / 2;
+            imgY = (canvas.height - imgH) / 2;
+            drawMap();
+        };
+
+        canvas.addEventListener("mousemove", (e) => {
+            if (mode !== "map") return;
+
+            const mouseX = e.offsetX;
+            const mouseY = e.offsetY;
+            const realX = Math.round((mouseX - imgX) / scale);
+            const realY = Math.round((mouseY - imgY) / scale);
+
+            coordsText.textContent = `좌표: (${realX}, ${realY})`;
+
+            const region = getRegionName(realX, realY);
+            if (region) {
+                brainText.textContent = "현재 위치: " + region;
+                preview.src = getPreviewSrc(region);
+                preview.style.display = "inline-block";
+            } else {
+                brainText.textContent = "현재 위치: 없음";
+                preview.style.display = "none";
+            }
+
+            drawMap(mouseX, mouseY);
+        });
+
+        canvas.addEventListener("mouseleave", () => {
+            if (mode !== "map") return;
+            brainText.textContent = "현재 위치: 없음";
+            coordsText.textContent = "좌표: (0, 0)";
+            preview.style.display = "none";
+            drawMap();
+        });
+
+        canvas.addEventListener("click", (e) => {
+            const x = e.offsetX;
+            const y = e.offsetY;
+
+            if (mode === "map") {
+                const realX = Math.round((x - imgX) / scale);
+                const realY = Math.round((y - imgY) / scale);
+                const region = getRegionName(realX, realY);
+                if (region) startRegionGame(region);
+                return;
+            }
+
+            if (mode !== "game") return;
+
+            if (currentRegion === "전두엽") {
+                for (const box of gameData.boxes) {
+                    if (x >= box.x && x <= box.x + box.w && y >= box.y && y <= box.y + box.h) {
+                        if (box.value === gameData.answer) {
+                            alert("정답! 🎉");
+                        } else {
+                            alert("틀렸어!");
+                        }
+                        goHome();
+                        return;
+                    }
+                }
+            }
+
+            if (currentRegion === "두정엽") {
+                for (const item of gameData.targets) {
+                    if (item.type === "square") {
+                        if (x >= item.x && x <= item.x + item.size && y >= item.y && y <= item.y + item.size) {
+                            alert("정답! 같은 모양을 찾았어 🎉");
+                            goHome();
+                            return;
+                        }
+                    }
+                }
+                alert("다시 해봐!");
+                goHome();
+                return;
+            }
+
+            if (currentRegion === "후두엽") {
+                for (const box of gameData.boxes) {
+                    if (x >= box.x && x <= box.x + box.w && y >= box.y && y <= box.y + box.h) {
+                        if (box.color === "red") {
+                            alert("정답! 🎉");
+                        } else {
+                            alert("틀렸어!");
+                        }
+                        goHome();
+                        return;
+                    }
+                }
+            }
+
+            if (currentRegion === "소뇌") {
+                if (!gameClickable || !gameData.box) return;
+                const b = gameData.box;
+                if (x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h) {
+                    const sec = ((Date.now() - gameData.startTime) / 1000).toFixed(2);
+                    alert("반응속도: " + sec + "초 ⚡");
+                    goHome();
+                    return;
+                }
+            }
+
+            if (currentRegion === "해마") {
+                if (!gameData.canClick) return;
+
+                for (const btn of gameData.buttons) {
+                    if (x >= btn.x && x <= btn.x + btn.w && y >= btn.y && y <= btn.y + btn.h) {
+                        const expected = gameData.sequence[gameData.step];
+                        if (btn.num === expected) {
+                            gameData.step++;
+                            if (gameData.step >= gameData.sequence.length) {
+                                alert("정답! 기억 성공 🎉");
+                                goHome();
+                            }
+                        } else {
+                            alert("순서를 다시 기억해봐!");
+                            goHome();
+                        }
+                        return;
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>
