@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 - 브레인 코드</title>
+    <link rel="icon" href="img/뇌-파랑.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --blue-dark:    #4A7EC7;
+            --blue-mid:     #6B9FD4;
+            --blue-pale:    #D6E8F7;
+            --blue-softest: #EEF5FC;
+            --white:        #FFFFFF;
+            --text-dark:    #2B4A6F;
+            --text-mid:     #4A6F96;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--blue-softest);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--blue-dark);
+            padding: 14px 40px;
+            box-shadow: 0 2px 12px rgba(74,126,199,0.25);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .brain-logo { width: 44px; height: 44px; border-radius: 8px; }
+
+        .logo-text {
+            font-family: 'Jua', sans-serif;
+            font-size: 22px;
+            color: white;
+        }
+
+        .menu {
+            list-style: none;
+            display: flex;
+            gap: 24px;
+            margin: 0; padding: 0;
+        }
+
+        .menu a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 20px;
+            transition: background 0.2s;
+        }
+
+        .menu a:hover { background: rgba(255,255,255,0.2); }
+
+        .page-body {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 44px 40px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 8px 32px rgba(74,126,199,0.15);
+            border: 1.5px solid var(--blue-pale);
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .card-header img {
+            width: 56px; height: 56px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .card-header h1 {
+            font-family: 'Jua', sans-serif;
+            font-size: 26px;
+            color: var(--text-dark);
+            margin: 0 0 6px;
+        }
+
+        .card-header p {
+            font-size: 14px;
+            color: var(--text-mid);
+            margin: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-mid);
+            margin-bottom: 6px;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid var(--blue-pale);
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'Noto Sans KR', sans-serif;
+            color: var(--text-dark);
+            background: var(--blue-softest);
+            margin-bottom: 18px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: var(--blue-mid);
+            background: white;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--blue-dark);
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Noto Sans KR', sans-serif;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            margin-top: 4px;
+        }
+
+        .login-btn:hover {
+            background: var(--blue-mid);
+            transform: translateY(-2px);
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--text-mid);
+        }
+
+        .signup-link a {
+            color: var(--blue-dark);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .signup-link a:hover { text-decoration: underline; }
+
+        /* Alert */
+        #alert-box {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 14px 28px;
+            border-radius: 0 0 14px 14px;
+            font-weight: 600;
+            font-family: 'Noto Sans KR', sans-serif;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            font-size: 15px;
+        }
+        #alert-box.success { background: #5BA89E; color: white; }
+        #alert-box.error   { background: #E07A7A; color: white; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="메인_페이지.html" class="nav-left">
+            <img src="img/뇌-파랑.png" class="brain-logo" alt="로고">
+            <span class="logo-text">브레인 코드</span>
+        </a>
+        <ul class="menu">
+            <li><a href="메인_페이지.html">홈</a></li>
+            <li><a href="회원가입_페이지.html">회원가입</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-body">
+        <div class="card">
+            <div class="card-header">
+                <img src="img/뇌-파랑.png" alt="로고">
+                <h1>로그인</h1>
+                <p>브레인 코드에 오신 것을 환영해요!</p>
+            </div>
+
+            <label for="emailInput">이메일</label>
+            <input type="email" id="emailInput" placeholder="example@email.com">
+
+            <label for="passwordInput">비밀번호</label>
+            <input type="password" id="passwordInput" placeholder="비밀번호를 입력하세요">
+
+            <button class="login-btn" onclick="login()">로그인</button>
+
+            <div class="signup-link">
+                계정이 없으신가요? <a href="회원가입_페이지.html">회원가입</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="alert-box"></div>
+
+    <script>
+        function showAlert(message, type = 'error') {
+            const box = document.getElementById("alert-box");
+            box.textContent = message;
+            box.className = type;
+            box.style.display = "block";
+            setTimeout(() => { box.style.display = "none"; }, 3000);
+        }
+
+        function login() {
+            const email = document.getElementById("emailInput").value;
+            const pw = document.getElementById("passwordInput").value;
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!email || !pw) return showAlert("이메일과 비밀번호를 입력해주세요!");
+            if (!emailPattern.test(email)) return showAlert("올바른 이메일 형식을 입력해주세요!");
+
+            localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem("userEmail", email);
+            showAlert("로그인이 되었습니다!", "success");
+            setTimeout(() => { window.location.href = "프로필_페이지.html"; }, 1000);
+        }
+    </script>
+</body>
+</html>
