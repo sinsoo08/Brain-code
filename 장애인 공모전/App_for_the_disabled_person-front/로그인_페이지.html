@@ -110,7 +110,6 @@
             background: rgba(255,255,255,0.2);
         }
 
-
         /* ── 본문 ── */
         .page-body {
             flex: 1;
@@ -359,9 +358,22 @@
         #alert-box.error   { background: #D96B6B; color: white; }
 
         /* ── 반응형 ── */
+        @media (max-width: 768px) {
+            .navbar { padding: 12px 24px; }
+            .menu a { font-size: 13px; padding: 6px 10px; }
+            .card { padding: 40px 32px 36px; }
+        }
+
         @media (max-width: 480px) {
-            .navbar { padding: 12px 20px; }
-            .card { padding: 36px 28px 32px; border-radius: 22px; }
+            .navbar { padding: 10px 16px; }
+            .logo-text { font-size: 17px; }
+            .menu { gap: 2px; }
+            .menu a { font-size: 12px; padding: 5px 8px; }
+            .card { padding: 32px 20px 28px; border-radius: 22px; }
+            .logo-wrap { width: 56px; height: 56px; border-radius: 16px; }
+            .logo-wrap img { width: 34px; height: 34px; }
+            .card-header h1 { font-size: 23px; }
+            .social-btn { font-size: 12.5px; padding: 11px 8px; }
         }
     </style>
 </head>

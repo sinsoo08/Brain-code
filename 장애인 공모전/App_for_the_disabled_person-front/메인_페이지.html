@@ -339,6 +339,66 @@
             display: flex;
             justify-content: center;
         }
+
+        /* ── 반응형 ── */
+
+        /* 태블릿 (768px 이하) */
+        @media (max-width: 768px) {
+            .navbar { padding: 12px 20px; }
+            .brain-logo { width: 36px; height: 36px; }
+            .logo-text { font-size: 19px; }
+            .menu { gap: 4px; }
+            .menu a { font-size: 14px; padding: 6px 10px; }
+
+            .hero { padding: 56px 24px 72px; }
+            .hero h1 { font-size: 26px; }
+            .hero p { font-size: 15px; }
+
+            .section { padding: 48px 24px; }
+            .cards-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+
+            .phone-section { padding: 48px 24px; }
+            .phone-wrap { gap: 36px; }
+            .phone-frame { width: min(280px, 80vw); }
+
+            .cta-section { padding: 32px 24px; }
+            .cta-banner { padding: 36px 28px; }
+            .cta-banner p { font-size: 16px; }
+        }
+
+        /* 모바일 (480px 이하) */
+        @media (max-width: 480px) {
+            .navbar { padding: 10px 16px; }
+            .logo-text { font-size: 17px; }
+            .menu a { font-size: 13px; padding: 5px 8px; }
+
+            .hero { padding: 40px 16px 56px; }
+            .hero-badge { font-size: 12px; }
+            .hero h1 { font-size: 22px; }
+            .hero p { font-size: 14px; margin-bottom: 28px; }
+            .hero-btn { font-size: 14px; padding: 12px 28px; }
+
+            .section { padding: 36px 16px; }
+            .section-title { font-size: 18px; margin-bottom: 24px; }
+            .cards-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .card { padding: 20px 14px; }
+            .card-icon { font-size: 28px; }
+            .card h3 { font-size: 15px; }
+            .card p { font-size: 13px; }
+
+            .phone-section { padding: 36px 16px; }
+            .phone-wrap { flex-direction: column; gap: 28px; }
+            .phone-frame { width: min(260px, 75vw); }
+            .feature-list h3 { font-size: 20px; }
+            .feature-item { font-size: 14px; }
+
+            .cta-section { padding: 24px 16px; }
+            .cta-banner { padding: 28px 20px; border-radius: 18px; }
+            .cta-banner p { font-size: 15px; }
+            .cta-btn { font-size: 14px; padding: 11px 26px; }
+
+            footer { font-size: 12px; padding: 20px 16px; text-align: center; }
+        }
     </style>
 </head>
 <body>
