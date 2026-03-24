@@ -34,19 +34,21 @@
             padding: 24px;
         }
 
+        /* ── 카드: overflow:hidden 제거 → 모서리 흰 선 원인이었음 ── */
         .form-card {
             background: var(--white);
             border-radius: 24px;
-            box-shadow: 0 16px 48px rgba(30, 70, 130, 0.22);
+            box-shadow: 0 16px 48px rgba(30, 70, 130, 0.28);
             width: 100%;
             max-width: 460px;
-            overflow: hidden;
         }
 
+        /* 헤더에 상단 radius 명시 → 카드와 정확히 일치 */
         .card-header {
             background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid));
             padding: 28px 32px 24px;
             text-align: center;
+            border-radius: 24px 24px 0 0;
         }
 
         .card-header h2 {
@@ -89,6 +91,7 @@
             align-items: center;
             justify-content: center;
             font-size: 15px;
+            flex-shrink: 0;
         }
 
         .input-group {
@@ -108,6 +111,7 @@
         }
 
         .input-group input {
+            width: 100%;
             padding: 12px 14px;
             border: 1.5px solid var(--blue-light);
             border-radius: 12px;
@@ -127,35 +131,29 @@
             box-shadow: 0 0 0 3px rgba(74,126,199,0.12);
         }
 
-        .input-row {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
+        /* ── 아바타 ── */
         .avatar-section {
             padding: 0 32px 24px;
         }
 
         .avatar-grid {
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 8px;
         }
 
         .avatar-item {
             flex: 1;
-            min-width: 68px;
-            max-width: 84px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             cursor: pointer;
         }
 
         .avatar-img-wrap {
-            width: 68px; height: 68px;
+            width: 100%;
+            aspect-ratio: 1;
             border-radius: 16px;
             background: var(--blue-softest);
             border: 2.5px solid var(--blue-pale);
@@ -184,18 +182,21 @@
         }
 
         .avatar-img-wrap img {
-            width: 52px; height: 52px;
+            width: 75%;
+            height: 75%;
             object-fit: contain;
         }
 
-        .avatar-emoji { font-size: 30px; line-height: 1; }
+        .avatar-emoji { font-size: 28px; line-height: 1; }
 
         .avatar-name {
             font-size: 11px;
             color: var(--text-mid);
             font-weight: 500;
+            text-align: center;
         }
 
+        /* ── 버튼 ── */
         .form-footer {
             padding: 0 32px 32px;
         }
@@ -222,15 +223,43 @@
 
         .submit-btn:active { transform: translateY(0); }
 
-        @media (max-width: 480px) {
-            body { padding: 16px; }
-            .card-header { padding: 22px 20px 18px; }
-            .form-section { padding: 22px 20px 16px; }
-            .avatar-section { padding: 0 20px 20px; }
-            .form-footer { padding: 0 20px 24px; }
+        /* ────────────────────────────
+           반응형
+        ──────────────────────────── */
 
-            .avatar-img-wrap { width: 58px; height: 58px; }
-            .avatar-img-wrap img { width: 44px; height: 44px; }
+        /* 태블릿 (768px 이하) */
+        @media (max-width: 768px) {
+            body { padding: 20px; align-items: flex-start; padding-top: 40px; }
+            .form-card { max-width: 100%; }
+            .card-header { padding: 24px 28px 20px; }
+            .card-header h2 { font-size: 20px; }
+            .form-section { padding: 24px 28px 18px; }
+            .avatar-section { padding: 0 28px 22px; }
+            .form-footer { padding: 0 28px 28px; }
+        }
+
+        /* 모바일 (480px 이하) */
+        @media (max-width: 480px) {
+            body { padding: 12px; padding-top: 20px; }
+            .card-header { padding: 20px 18px 16px; border-radius: 20px 20px 0 0; }
+            .card-header h2 { font-size: 18px; }
+            .card-header p { font-size: 12px; }
+            .form-card { border-radius: 20px; }
+            .form-section { padding: 20px 18px 14px; }
+            .section-label { font-size: 14px; }
+            .input-group input { font-size: 14px; padding: 11px 12px; }
+            .avatar-section { padding: 0 18px 18px; }
+            .avatar-grid { gap: 6px; }
+            .avatar-name { font-size: 10px; }
+            .form-footer { padding: 0 18px 20px; }
+            .submit-btn { font-size: 16px; padding: 14px; }
+        }
+
+        /* 아주 작은 화면 (360px 이하) */
+        @media (max-width: 360px) {
+            body { padding: 8px; padding-top: 12px; }
+            .avatar-grid { gap: 4px; }
+            .avatar-name { font-size: 9px; }
         }
     </style>
 </head>
@@ -254,15 +283,14 @@
                 <input type="text" id="user-name" placeholder="이름을 입력하세요">
             </div>
 
-            <div class="input-row">
-                <div class="input-group">
-                    <label for="birth-year">태어난 년도</label>
-                    <input type="number" id="birth-year" placeholder="예: 2000">
-                </div>
-                <div class="input-group">
-                    <label for="birth-date">태어난 월/일</label>
-                    <input type="text" id="birth-date" placeholder="예: 0520">
-                </div>
+            <div class="input-group">
+                <label for="birth-year">태어난 년도</label>
+                <input type="number" id="birth-year" placeholder="예: 2000">
+            </div>
+
+            <div class="input-group">
+                <label for="birth-date">태어난 월/일</label>
+                <input type="text" id="birth-date" placeholder="예: 0520">
             </div>
         </div>
 
