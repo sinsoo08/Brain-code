@@ -380,13 +380,13 @@
 <body>
 
     <nav class="navbar">
-        <a href="메인_페이지.html" class="nav-left">
+        <a href="main.html" class="nav-left">
             <img src="img/뇌-파랑.png" class="brain-logo" alt="로고">
             <span class="logo-text">브레인 코드</span>
         </a>
         <ul class="menu">
-            <li><a href="메인_페이지.html">홈</a></li>
-            <li><a href="회원가입_페이지.html">회원가입</a></li>
+            <li><a href="main.html">홈</a></li>
+            <li><a href="signup.html">회원가입</a></li>
         </ul>
     </nav>
 
@@ -446,7 +446,7 @@
             </div>
 
             <div class="signup-link">
-                계정이 없으신가요? <a href="회원가입_페이지.html">회원가입</a>
+                계정이 없으신가요? <a href="signup.html">회원가입</a>
             </div>
         </div>
     </div>
@@ -486,7 +486,7 @@
             localStorage.setItem("isLoggedIn", "true");
             localStorage.setItem("userEmail", email);
             showAlert("로그인 되었습니다!", "success");
-            setTimeout(() => { window.location.href = "프로필_페이지.html"; }, 1000);
+            setTimeout(() => { window.location.href = "profile.html"; }, 1000);
         }
 
         /* ── 엔터키 지원 ── */

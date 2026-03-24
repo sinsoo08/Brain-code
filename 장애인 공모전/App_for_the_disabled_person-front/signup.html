@@ -254,13 +254,13 @@
 <body>
 
     <nav class="navbar">
-        <a href="메인_페이지.html" class="nav-left">
+        <a href="main.html" class="nav-left">
             <img src="img/뇌-파랑.png" class="brain-logo" alt="로고">
             <span class="logo-text">브레인 코드</span>
         </a>
         <ul class="menu">
-            <li><a href="메인_페이지.html">홈</a></li>
-            <li><a href="로그인_페이지.html">로그인</a></li>
+            <li><a href="main.html">홈</a></li>
+            <li><a href="login.html">로그인</a></li>
         </ul>
     </nav>
 
@@ -345,7 +345,7 @@
             </div>
 
             <div class="login-link">
-                이미 계정이 있으신가요? <a href="로그인_페이지.html">로그인</a>
+                이미 계정이 있으신가요? <a href="login.html">로그인</a>
             </div>
         </div>
     </div>
@@ -409,7 +409,7 @@
                         localStorage.setItem("userName",  user.name);
                         localStorage.setItem("loginType", "google");
                         showAlert("구글 회원가입 완료! 환영해요 😊", "success");
-                        setTimeout(() => { window.location.href = "프로필 페이지.html"; }, 1200);
+                        setTimeout(() => { window.location.href = "kid.html"; }, 1200);
                     })
                     .catch(() => showAlert("사용자 정보를 가져오지 못했어요.", "error"));
                 }
@@ -425,7 +425,7 @@
             localStorage.setItem("isLoggedIn", "true");
             localStorage.setItem("loginType",  "google");
             showAlert("구글 회원가입 완료! 환영해요 😊", "success");
-            setTimeout(() => { window.location.href = "프로필 페이지.html"; }, 1200);
+            setTimeout(() => { window.location.href = "kid.html"; }, 1200);
         }
 
         /* =========================================================
@@ -454,7 +454,7 @@
                             localStorage.setItem("userName",  name);
                             localStorage.setItem("loginType", "kakao");
                             showAlert("카카오 회원가입 완료! 환영해요 😊", "success");
-                            setTimeout(() => { window.location.href = "프로필 페이지.html"; }, 1200);
+                            setTimeout(() => { window.location.href = "kid.html"; }, 1200);
                         },
                         fail: function(err) {
                             console.error(err);
@@ -516,7 +516,7 @@
             localStorage.setItem("userEmail",  email);
             localStorage.setItem("loginType",  "email");
             showAlert("회원가입 완료! 환영해요 🎉", "success");
-            setTimeout(() => { window.location.href = "아이_정보.html"; }, 1200);
+            setTimeout(() => { window.location.href = "kid.html"; }, 1200);
         }
 
         document.getElementById("passwordConfirm").addEventListener("keydown", e => {
