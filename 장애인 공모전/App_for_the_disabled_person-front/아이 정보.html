@@ -22,98 +22,335 @@
             --text-light:   #7A9DBF;
         }
 
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body{
-            margin: 0;
+        body {
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: var(--blue-softest);
-            color: var(--text-dark);
-        }
-
-        .info-container {
-            background-color: var(--white);
-            padding: 30px;
-            border-radius: 20px;    /* 모서리를 둥글게 */
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05); /* 부드러운 그림자 */
-            width: 90%;
-            max-width: 400px;       /* 박스 최대 너비 */
+            background: linear-gradient(160deg, var(--blue-dark) 0%, var(--blue-mid) 50%, var(--blue-pale) 100%);
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            gap: 15px;              /* 입력칸 사이 간격 */
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
         }
 
-        .info-container h2 {
-            font-family: 'Jua', sans-serif;
-            color: var(--text-dark);
-            margin: 0 0 10px 0;
+        .form-card {
+            background: var(--white);
+            border-radius: 24px;
+            box-shadow: 0 16px 48px rgba(30, 70, 130, 0.22);
+            width: 100%;
+            max-width: 460px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid));
+            padding: 28px 32px 24px;
             text-align: center;
         }
 
-        /* 입력칸 스타일 */
+        .card-header h2 {
+            font-family: 'Jua', sans-serif;
+            font-size: 22px;
+            color: white;
+            font-weight: 400;
+            margin-bottom: 4px;
+        }
+
+        .card-header p {
+            font-size: 13px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .form-section {
+            padding: 28px 32px 20px;
+        }
+
+        .form-section + .form-section {
+            border-top: 1.5px solid var(--blue-softest);
+            padding-top: 24px;
+        }
+
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Jua', sans-serif;
+            font-size: 16px;
+            color: var(--blue-dark);
+            margin-bottom: 16px;
+        }
+
+        .section-label .icon {
+            width: 30px; height: 30px;
+            background: var(--blue-pale);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+
         .input-group {
             display: flex;
             flex-direction: column;
             gap: 5px;
+            margin-bottom: 14px;
         }
 
+        .input-group:last-child { margin-bottom: 0; }
+
         .input-group label {
-            font-size: 14px;
+            font-size: 12px;
+            color: var(--text-mid);
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+
+        .input-group input {
+            padding: 12px 14px;
+            border: 1.5px solid var(--blue-light);
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'Noto Sans KR', sans-serif;
+            color: var(--text-dark);
+            outline: none;
+            background: var(--blue-softest);
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        }
+
+        .input-group input::placeholder { color: var(--text-light); font-size: 13px; }
+
+        .input-group input:focus {
+            border-color: var(--blue-dark);
+            background: var(--white);
+            box-shadow: 0 0 0 3px rgba(74,126,199,0.12);
+        }
+
+        .input-row {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .avatar-section {
+            padding: 0 32px 24px;
+        }
+
+        .avatar-grid {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .avatar-item {
+            flex: 1;
+            min-width: 68px;
+            max-width: 84px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .avatar-img-wrap {
+            width: 68px; height: 68px;
+            border-radius: 16px;
+            background: var(--blue-softest);
+            border: 2.5px solid var(--blue-pale);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            overflow: hidden;
+        }
+
+        .avatar-item:hover .avatar-img-wrap {
+            border-color: var(--blue-mid);
+            background: var(--blue-pale);
+            transform: translateY(-2px);
+        }
+
+        .avatar-item.selected .avatar-img-wrap {
+            border-color: var(--blue-dark);
+            background: var(--blue-pale);
+            box-shadow: 0 0 0 3px rgba(74,126,199,0.2);
+        }
+
+        .avatar-item.selected .avatar-name {
+            color: var(--blue-dark);
+            font-weight: 700;
+        }
+
+        .avatar-img-wrap img {
+            width: 52px; height: 52px;
+            object-fit: contain;
+        }
+
+        .avatar-emoji { font-size: 30px; line-height: 1; }
+
+        .avatar-name {
+            font-size: 11px;
             color: var(--text-mid);
             font-weight: 500;
         }
 
-        .input-group input {
-            padding: 12px;
-            border: 1px solid var(--blue-light);
-            border-radius: 10px;    /* 입력칸도 둥글게 */
-            font-size: 16px;
-            outline: none;
-            transition: border-color 0.2s;
+        .form-footer {
+            padding: 0 32px 32px;
         }
 
-        .input-group input:focus {
-            border-color: var(--blue-dark); /* 클릭 시 강조 색상 */
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid));
+            color: white;
+            font-family: 'Jua', sans-serif;
+            font-size: 18px;
+            padding: 15px;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(74,126,199,0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+            letter-spacing: 0.03em;
         }
 
-        .main-content {
-            display: flex;
-            justify-content: center; /* 가로 중앙 */
-            align-items: center;     /* 세로 중앙 */
-            
-            min-height: calc(100vh - 80px); /* 72px는 네비바의 대략적인 높이입니다 */
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(74,126,199,0.4);
+        }
+
+        .submit-btn:active { transform: translateY(0); }
+
+        @media (max-width: 480px) {
+            body { padding: 16px; }
+            .card-header { padding: 22px 20px 18px; }
+            .form-section { padding: 22px 20px 16px; }
+            .avatar-section { padding: 0 20px 20px; }
+            .form-footer { padding: 0 20px 24px; }
+
+            .avatar-img-wrap { width: 58px; height: 58px; }
+            .avatar-img-wrap img { width: 44px; height: 44px; }
         }
     </style>
-
 </head>
 <body>
-    <main class="main-content">
-        <div class="info-container">
-        <h2>정보 입력</h2>
-        
-        <div class="input-group">
-            <label for="user-name">아이의 이름은?</label>
-            <input type="text" id="user-name" placeholder="이름을 입력하세요">
+
+    <div class="form-card">
+
+        <div class="card-header">
+            <h2>아이 정보 입력</h2>
+            <p>입력한 정보로 맞춤 학습을 시작해요</p>
         </div>
 
-        <div class="input-group">
-            <label for="birth-year">아이의 태어난 년도는?</label>
-            <input type="number" id="birth-year" placeholder="예: 2015">
+        <div class="form-section">
+            <div class="section-label">
+                <div class="icon">📝</div>
+                기본 정보
+            </div>
+
+            <div class="input-group">
+                <label for="user-name">아이의 이름</label>
+                <input type="text" id="user-name" placeholder="이름을 입력하세요">
+            </div>
+
+            <div class="input-row">
+                <div class="input-group">
+                    <label for="birth-year">태어난 년도</label>
+                    <input type="number" id="birth-year" placeholder="예: 2000">
+                </div>
+                <div class="input-group">
+                    <label for="birth-date">태어난 월/일</label>
+                    <input type="text" id="birth-date" placeholder="예: 0520">
+                </div>
+            </div>
         </div>
 
-        <div class="input-group">
-            <label for="birth-date">아이가 태어난 월 일은?</label>
-            <input type="text" id="birth-date" placeholder="예: 0520">
+        <div class="form-section">
+            <div class="section-label">
+                <div class="icon">🐾</div>
+                캐릭터 선택
+            </div>
         </div>
-    </main>
 
-    <div class="avatar-list">
-        <img src="강아지.png" class="avatar" />
-        <img src="고양이.png" class="avatar" />
-        <img src="우파루파.png" class="avatar" />
-        <img src="라쿤.png" class="avatar" />
-        <img src="곰.png" class="avatar" />
+        <div class="avatar-section">
+            <div class="avatar-grid">
+                <div class="avatar-item" data-src="img/강아지.png">
+                    <div class="avatar-img-wrap">
+                        <img src="img/강아지.png" alt="강아지" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                        <span class="avatar-emoji" style="display:none">🐶</span>
+                    </div>
+                    <span class="avatar-name">강아지</span>
+                </div>
+                <div class="avatar-item" data-src="img/고양이.png">
+                    <div class="avatar-img-wrap">
+                        <img src="img/고양이.png" alt="고양이" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                        <span class="avatar-emoji" style="display:none">🐱</span>
+                    </div>
+                    <span class="avatar-name">고양이</span>
+                </div>
+                <div class="avatar-item" data-src="img/우파루파.png">
+                    <div class="avatar-img-wrap">
+                        <img src="img/우파루파.png" alt="우파루파" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                        <span class="avatar-emoji" style="display:none">🦎</span>
+                    </div>
+                    <span class="avatar-name">우파루파</span>
+                </div>
+                <div class="avatar-item" data-src="img/라쿤.png">
+                    <div class="avatar-img-wrap">
+                        <img src="img/라쿤.png" alt="라쿤" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                        <span class="avatar-emoji" style="display:none">🦝</span>
+                    </div>
+                    <span class="avatar-name">라쿤</span>
+                </div>
+                <div class="avatar-item" data-src="img/곰.png">
+                    <div class="avatar-img-wrap">
+                        <img src="img/곰.png" alt="곰" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                        <span class="avatar-emoji" style="display:none">🐻</span>
+                    </div>
+                    <span class="avatar-name">곰</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-footer">
+            <button class="submit-btn" onclick="handleSubmit()">
+                프로필 시작하기 →
+            </button>
+        </div>
+
     </div>
-</div>
+
+    <script>
+        let selectedAvatar = null;
+
+        document.querySelectorAll('.avatar-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.avatar-item').forEach(a => a.classList.remove('selected'));
+                item.classList.add('selected');
+                selectedAvatar = item.dataset.src;
+            });
+        });
+
+        function handleSubmit() {
+            const name = document.getElementById('user-name').value.trim();
+            const year = document.getElementById('birth-year').value.trim();
+            const date = document.getElementById('birth-date').value.trim();
+
+            if (!name) { alert('아이의 이름을 입력해 주세요.'); document.getElementById('user-name').focus(); return; }
+            if (!year) { alert('태어난 년도를 입력해 주세요.'); document.getElementById('birth-year').focus(); return; }
+            if (!date) { alert('태어난 월/일을 입력해 주세요.'); document.getElementById('birth-date').focus(); return; }
+            if (!selectedAvatar) { alert('캐릭터를 선택해 주세요.'); return; }
+
+            fetch('/save-avatar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, birthYear: year, birthDate: date, avatar: selectedAvatar })
+            }).catch(() => {});
+
+            location.href = '프로필_페이지.html';
+        }
+    </script>
+
 </body>
 </html>
