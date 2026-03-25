@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BRAIN code · 시작</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&display=swap" rel="stylesheet" />
+    <style>
+        /* 형님이 주신 CSS 100% 그대로 유지 */
+        
+         :root {
+            --bg: #0d1b2a;
+            --surface: #132236;
+            --card: #1a2e45;
+            --line: rgba(100, 160, 220, 0.18);
+            --accent: #4fa3e3;
+            --accent2: #7ec8ff;
+            --text: #e8f4ff;
+            --sub: #7da8cc;
+            --btn-l: #1e3a5f;
+            --btn-r: #163152;
+            --radius: 18px;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: "Noto Sans KR", sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse 60% 40% at 30% 20%, rgba(79, 163, 227, 0.10) 0%, transparent 70%), radial-gradient(ellipse 50% 35% at 75% 80%, rgba(126, 200, 255, 0.07) 0%, transparent 65%);
+            pointer-events: none;
+        }
+        
+        .card {
+            width: min(420px, 92vw);
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            padding: 36px 32px 32px;
+            box-shadow: 0 0 0 1px rgba(79, 163, 227, 0.08), 0 32px 80px rgba(0, 0, 0, 0.55);
+            animation: slideUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.97);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .profile-row {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 30px;
+            animation: fadeIn 0.6s 0.15s both;
+        }
+        
+        .avatar {
+            flex-shrink: 0;
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1d3d60, #2a5580);
+            border: 2px solid var(--accent);
+            display: grid;
+            place-items: center;
+            font-size: 30px;
+            box-shadow: 0 0 0 4px rgba(79, 163, 227, 0.12), 0 8px 20px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .avatar::after {
+            content: "";
+            position: absolute;
+            top: -30%;
+            left: -30%;
+            width: 60%;
+            height: 60%;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+        }
+        
+        .profile-info {
+            flex: 1;
+        }
+        
+        .profile-name {
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--text);
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+        
+        .profile-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, var(--accent), transparent);
+            margin: 7px 0;
+            opacity: 0.4;
+        }
+        
+        .profile-meta {
+            font-size: 13px;
+            color: var(--sub);
+            font-weight: 300;
+            letter-spacing: 0.3px;
+        }
+        
+        .welcome-box {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.6s 0.3s both;
+        }
+        
+        .welcome-box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--accent), var(--accent2), transparent);
+            opacity: 0.6;
+        }
+        
+        .welcome-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            opacity: 0.8;
+        }
+        
+        .welcome-title {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--text);
+            line-height: 1.25;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+        
+        .welcome-title span {
+            color: var(--accent2);
+        }
+        
+        .welcome-desc {
+            font-size: 13.5px;
+            color: var(--sub);
+            line-height: 1.75;
+            font-weight: 300;
+        }
+        
+        .deco-brain {
+            position: absolute;
+            right: 18px;
+            bottom: 14px;
+            font-size: 52px;
+            opacity: 0.06;
+            pointer-events: none;
+            user-select: none;
+        }
+        
+        .btn-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+            animation: fadeIn 0.6s 0.45s both;
+        }
+        
+        .btn-start {
+            background: linear-gradient(135deg, #2461a0, #1a4a7e);
+            border: 1px solid rgba(79, 163, 227, 0.35);
+            border-radius: var(--radius);
+            color: var(--text);
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            padding: 18px 24px;
+            cursor: pointer;
+            transition: all 0.22s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: left;
+        }
+        
+        .btn-start::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.07), transparent);
+            opacity: 0;
+            transition: opacity 0.22s;
+        }
+        
+        .btn-start:hover {
+            transform: translateY(-2px);
+            border-color: rgba(79, 163, 227, 0.6);
+            box-shadow: 0 8px 24px rgba(36, 97, 160, 0.45);
+        }
+        
+        .btn-start:hover::after {
+            opacity: 1;
+        }
+        
+        .btn-start-sub {
+            font-size: 11px;
+            font-weight: 300;
+            color: var(--sub);
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        
+        .btn-start-main {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-start-main .arrow {
+            font-size: 18px;
+            transition: transform 0.22s;
+        }
+        
+        .btn-start:hover .arrow {
+            transform: translateX(4px);
+        }
+        
+        .btn-stats {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            color: var(--sub);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            padding: 18px 16px;
+            cursor: pointer;
+            transition: all 0.22s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+        
+        .btn-stats:hover {
+            background: #1f3652;
+            color: var(--text);
+            border-color: rgba(79, 163, 227, 0.35);
+            transform: translateY(-2px);
+        }
+        
+        .btn-stats-icon {
+            font-size: 18px;
+        }
+        
+        .footer-sig {
+            text-align: center;
+            margin-top: 22px;
+            font-size: 11px;
+            color: rgba(125, 168, 204, 0.35);
+            letter-spacing: 1.5px;
+            animation: fadeIn 0.6s 0.6s both;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .editable {
+            background: none;
+            border: none;
+            outline: none;
+            color: inherit;
+            font: inherit;
+            width: 100%;
+            cursor: text;
+        }
+        
+        .editable:focus {
+            border-bottom: 1px dashed rgba(79, 163, 227, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <div class="profile-row">
+            <div class="avatar">🧠</div>
+            <div class="profile-info">
+                <div class="profile-name">
+                    <input class="editable" id="nameInput" value="이름을 입력하세요" maxlength="12" onfocus="if(this.value==='이름을 입력하세요')this.value=''" onblur="if(!this.value)this.value='이름을 입력하세요'" />
+                </div>
+                <div class="profile-divider"></div>
+                <div class="profile-meta">
+                    <input class="editable" id="birthInput" value="생년월일 · 예) 2010.03.15" maxlength="24" onfocus="if(this.value.startsWith('생년월일'))this.value=''" onblur="if(!this.value)this.value='생년월일 · 예) 2010.03.15'" />
+                </div>
+            </div>
+        </div>
+
+        <div class="welcome-box">
+            <div class="welcome-label">Brain Training</div>
+            <div class="welcome-title">오늘도<br><span>훈련</span> 시작해볼까요?</div>
+            <div class="welcome-desc">뇌 영역을 선택하고<br>나만의 속도로 게임을 즐겨보세요.</div>
+            <div class="deco-brain">🧠</div>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn-start" onclick="handleStart()">
+      <div class="btn-start-sub">클릭해서 시작</div>
+      <div class="btn-start-main">게임 시작 <span class="arrow">→</span></div>
+    </button>
+            <button class="btn-stats" onclick="handleStats()">
+      <span class="btn-stats-icon">📊</span>통계<br>보기
+    </button>
+        </div>
+        <div class="footer-sig">BRAIN CODE · 뇌 기능 훈련</div>
+    </div>
+
+    <script>
+        function handleStart() {
+            const name = document.getElementById("nameInput").value;
+            const birth = document.getElementById("birthInput").value;
+
+            if (name === "이름을 입력하세요" || !name.trim()) {
+                document.getElementById("nameInput").focus();
+                return;
+            }
+
+            // 1. 이름과 생년월일을 로컬 스토리지에 저장 (1.html에서 쓰기 위해)
+            localStorage.setItem('brain_user_name', name);
+            localStorage.setItem('brain_user_birth', birth);
+
+            // 2. 1.html로 이동
+            location.href = "1.html";
+        }
+
+        function handleStats() {
+            // 통계 버튼 클릭 시 1.html의 통계 파트로 바로 보내고 싶다면:
+            location.href = "1.html?showStats=true";
+        }
+    </script>
+</body>
+
+</html>
