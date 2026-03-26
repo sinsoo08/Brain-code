@@ -44,7 +44,7 @@ export default function LoginPage() {
       <div className="page-body">
         <div className="card">
           <div className="card-header">
-            <h1>로그인</h1>
+            <h1 className="logo-text2">로그인</h1>
             <p>브레인 코드에 오신 것을 환영해요 👋</p>
           </div>
 
