@@ -1,8 +1,45 @@
-html {
-  font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+:root {
+  color-scheme: light;
+
+  --blue-dark: #4a7ec7;
+  --blue-mid: #6b9fd4;
+  --blue-light: #a8c8e8;
+  --blue-pale: #d6e8f7;
+  --blue-softest: #eef5fc;
+
+  --body-blue-dark: #6fa8dc;
+  --body-blue-mid: #9cc7eb;
+  --body-blue-pale: #eaf4fc;
+
+  --white: #ffffff;
+  --text-dark: #2b4a6f;
+  --text-mid: #4a6f96;
+  --text-light: #7a9dbf;
+
+  --green: #4caf7d;
+  --green-pale: #e8f7ef;
+  --orange: #f0a044;
+  --orange-pale: #fef3e2;
+  --danger: #e05555;
+  --danger-pale: #fdeaea;
+
+  --background: #fafafa;
+  --foreground: #ffffff;
+  --text-primary: #000000;
+  --text-secondary: #666666;
+  --button-primary-hover: #383838;
+  --button-secondary-hover: #f2f2f2;
+  --button-secondary-border: #ebebeb;
+  --font-geist-sans: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
 }
 
-*, *::before, *::after {
+html {
+  font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+}
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -10,5 +47,6 @@ html {
 }
 
 body {
-  font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+  font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+  min-height: 100vh;
 }

@@ -1,24 +1,24 @@
-'use client'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import './main.css'
+"use client";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import "./main.css";
 
 export default function MainPage() {
-  const router = useRouter()
+  const router = useRouter();
 
-  const images = ["/img/핸드폰.png"]
-  const [current, setCurrent] = useState(0)
+  const images = ["/img/핸드폰.png"];
+  const [current, setCurrent] = useState(0);
 
   const nextSlide = () => {
-    setCurrent((prev) => (prev + 1) % images.length)
-  }
+    setCurrent((prev) => (prev + 1) % images.length);
+  };
 
   const prevSlide = () => {
-    setCurrent((prev) => (prev - 1 + images.length) % images.length)
-  }
+    setCurrent((prev) => (prev - 1 + images.length) % images.length);
+  };
 
   return (
-    <div>
+    <div className="main-page">
       {/* NAV */}
       <nav className="navbar">
         <a href="/" className="nav-left">
@@ -26,8 +26,22 @@ export default function MainPage() {
           <span className="logo-text">브레인 코드</span>
         </a>
         <ul className="menu">
-          <li><a onClick={() => router.push('/login')} style={{cursor:'pointer'}}>로그인</a></li>
-          <li><a onClick={() => router.push('/signup')} style={{cursor:'pointer'}}>회원가입</a></li>
+          <li>
+            <a
+              onClick={() => router.push("/login")}
+              style={{ cursor: "pointer" }}
+            >
+              로그인
+            </a>
+          </li>
+          <li>
+            <a
+              onClick={() => router.push("/signup")}
+              style={{ cursor: "pointer" }}
+            >
+              회원가입
+            </a>
+          </li>
         </ul>
       </nav>
 
@@ -35,10 +49,16 @@ export default function MainPage() {
       <section className="hero">
         <div className="hero-badge">발달장애 아동을 위한 학습 플랫폼</div>
         <h1>
-          발달장애 아동을 위한<br />인지 훈련 게임 플랫폼
+          발달장애 아동을 위한
+          <br />
+          인지 훈련 게임 플랫폼
         </h1>
-        <p>아이의 인지능력과 소통능력을 키워요!<br />다양한 게임으로 즐겁게 학습해요!</p>
-        <button className="hero-btn" onClick={() => router.push('/login')}>
+        <p>
+          아이의 인지능력과 소통능력을 키워요!
+          <br />
+          다양한 게임으로 즐겁게 학습해요!
+        </p>
+        <button className="hero-btn" onClick={() => router.push("/login")}>
           지금 무료로 시작하기 →
         </button>
       </section>
@@ -72,16 +92,22 @@ export default function MainPage() {
 
       {/* PHONE */}
       <section className="phone-section">
-        <h2 className="section-title">발달장애 아동의 학습을 돕기 위해 만들었어요!</h2>
+        <h2 className="section-title">
+          발달장애 아동의 학습을 돕기 위해 만들었어요!
+        </h2>
         <div className="phone-wrap">
           <div className="phone-frame">
             <img
               src={images[current]}
               alt="앱 화면"
-              style={{ transition: 'opacity 0.3s ease' }}
+              style={{ transition: "opacity 0.3s ease" }}
             />
-            <button className="slide-btn prev" onClick={prevSlide}>←</button>
-            <button className="slide-btn next" onClick={nextSlide}>→</button>
+            <button className="slide-btn prev" onClick={prevSlide}>
+              ←
+            </button>
+            <button className="slide-btn next" onClick={nextSlide}>
+              →
+            </button>
           </div>
 
           <div className="feature-list">
@@ -106,14 +132,20 @@ export default function MainPage() {
       {/* CTA */}
       <section className="cta-section">
         <div className="cta-banner">
-          <p>발달장애 아동의 두뇌 발달 게임으로<br />아이학습 오늘부터 시작해 보세요!</p>
-          <button className="cta-btn" onClick={() => router.push('/login')}>
+          <p>
+            발달장애 아동의 두뇌 발달 게임으로
+            <br />
+            아이학습 오늘부터 시작해 보세요!
+          </p>
+          <button className="cta-btn" onClick={() => router.push("/login")}>
             지금 시작하기 →
           </button>
         </div>
       </section>
 
-      <footer>© 2026 브레인 코드. 발달장애 아동을 위한 인지 훈련 플랫폼.</footer>
+      <footer>
+        © 2026 브레인 코드. 발달장애 아동을 위한 인지 훈련 플랫폼.
+      </footer>
     </div>
-  )
+  );
 }
