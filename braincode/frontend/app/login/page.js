@@ -1,51 +1,90 @@
 "use client";
+
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import "../login.css";
 
 export default function LoginPage() {
   const router = useRouter();
+  const hideTimerRef = useRef(null);
+  const navigateTimerRef = useRef(null);
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+  const [alertState, setAlertState] = useState({
+    visible: false,
+    message: "",
+    type: "error",
+  });
 
-  function showAlert(message, type = "error") {
-    const box = document.getElementById("alert-box");
-    box.textContent = message;
-    box.className = type;
-    box.classList.add("show");
-    clearTimeout(box._timer);
-    box._timer = setTimeout(() => {
-      box.classList.remove("show");
+  useEffect(() => {
+    return () => {
+      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+      if (navigateTimerRef.current) clearTimeout(navigateTimerRef.current);
+    };
+  }, []);
+
+  const showAlert = (message, type = "error") => {
+    setAlertState({
+      visible: true,
+      message,
+      type,
+    });
+
+    if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+    hideTimerRef.current = setTimeout(() => {
+      setAlertState((prev) => ({ ...prev, visible: false }));
     }, 3000);
-  }
+  };
 
-  function login() {
-    const email = document.getElementById("emailInput").value.trim();
-    const pw = document.getElementById("passwordInput").value;
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleLogin = () => {
+    const email = form.email.trim();
+    const password = form.password;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!email || !pw) return showAlert("이메일과 비밀번호를 입력해주세요!");
-    if (!emailPattern.test(email))
-      return showAlert("올바른 이메일 형식을 입력해주세요!");
+    if (!email || !password) {
+      showAlert("이메일과 비밀번호를 입력해 주세요.");
+      return;
+    }
+
+    if (!emailPattern.test(email)) {
+      showAlert("올바른 이메일 형식을 입력해 주세요.");
+      return;
+    }
 
     localStorage.setItem("isLoggedIn", "true");
     localStorage.setItem("userEmail", email);
-    showAlert("로그인 되었습니다!", "success");
-    setTimeout(() => {
-      router.push("/profile");
+    showAlert("로그인되었습니다.", "success");
+
+    if (navigateTimerRef.current) clearTimeout(navigateTimerRef.current);
+    navigateTimerRef.current = setTimeout(() => {
+      router.push("/game");
     }, 1000);
-  }
+  };
 
   return (
     <div className="login-page">
       <nav className="navbar">
-        <a href="/" className="nav-left">
-          <img src="/img/brain-blue.png" className="brain-logo" alt="로고" />
+        <Link href="/" className="nav-left">
+          <img src="/img/brain-blue.png" className="brain-logo" alt="브레인 코드 로고" />
           <span className="logo-text">브레인 코드</span>
-        </a>
+        </Link>
         <ul className="menu">
           <li>
-            <a onClick={() => router.push("/")}>홈</a>
+            <Link href="/">홈</Link>
           </li>
           <li>
-            <a onClick={() => router.push("/signup")}>회원가입</a>
+            <Link href="/signup">회원가입</Link>
           </li>
         </ul>
       </nav>
@@ -54,10 +93,10 @@ export default function LoginPage() {
         <div className="card">
           <div className="card-header">
             <div className="logo-wrap">
-              <img src="/img/brain-blue.png" alt="로고" />
+              <img src="/img/brain-blue.png" alt="브레인 코드 로고" />
             </div>
             <h1>로그인</h1>
-            <p>브레인 코드에 오신 것을 환영해요 👋</p>
+            <p>브레인 코드에 다시 오신 것을 환영해요.</p>
           </div>
 
           <div className="field">
@@ -66,7 +105,10 @@ export default function LoginPage() {
               <input
                 type="email"
                 id="emailInput"
+                name="email"
+                value={form.email}
                 placeholder="example@email.com"
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -77,26 +119,30 @@ export default function LoginPage() {
               <input
                 type="password"
                 id="passwordInput"
-                placeholder="비밀번호를 입력하세요"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") login();
+                name="password"
+                value={form.password}
+                placeholder="비밀번호를 입력해 주세요"
+                onChange={handleChange}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") handleLogin();
                 }}
               />
             </div>
           </div>
 
-          <button className="login-btn" onClick={login}>
+          <button className="login-btn" type="button" onClick={handleLogin}>
             로그인
           </button>
 
           <div className="signup-link">
-            계정이 없으신가요?{" "}
-            <a onClick={() => router.push("/signup")}>회원가입</a>
+            계정이 없으신가요? <Link href="/signup">회원가입</Link>
           </div>
         </div>
       </div>
 
-      <div id="alert-box"></div>
+      <div id="alert-box" className={`${alertState.type} ${alertState.visible ? "show" : ""}`.trim()}>
+        {alertState.message}
+      </div>
     </div>
   );
 }

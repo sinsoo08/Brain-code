@@ -88,6 +88,13 @@
   margin-bottom: 0;
 }
 
+.kid-page .form-error {
+  margin-top: 14px;
+  color: var(--danger);
+  font-size: 13px;
+  font-weight: 600;
+}
+
 .kid-page .input-group label {
   color: var(--text-mid);
   font-size: 12px;

@@ -1,46 +1,8 @@
-﻿export function initGamePage() {
-  let destroyed = false
-  const timers = new Set()
-  const schedule = (fn, delay) => {
-    const id = window.setTimeout(() => {
-      timers.delete(id)
-      if (!destroyed) fn()
-    }, delay)
-    timers.add(id)
-    return id
-  }
-  const resetNode = (id) => {
-    const node = document.getElementById(id)
-    if (!node) return null
-    const clone = node.cloneNode(true)
-    node.replaceWith(clone)
-    return clone
-  }
-  ;['logoBtn', 'backToBrainBtn', 'openStatsBtn', 'openSettingsBtn', 'closeSettingsBtn', 'closeStatsBtn', 'resetStatsBtn', 'soundToggle', 'autoShowStats'].forEach(resetNode)
-  document.querySelectorAll('#brainSvg .region').forEach((node) => node.remove())
-  const brightRegion = document.getElementById('brightRegion')
-  const dimOverlay = document.getElementById('dimOverlay')
-  const brainLabel = document.getElementById('brainLabel')
-  const brainLabelName = document.getElementById('brainLabelName')
-  const brainLabelDesc = document.getElementById('brainLabelDesc')
-  const gameShellReset = document.getElementById('gameShell')
-  const gameViewReset = document.getElementById('gameView')
-  const brainSelectViewReset = document.getElementById('brainSelectView')
-  if (brightRegion) brightRegion.setAttribute('points', '')
-  if (dimOverlay) dimOverlay.style.display = 'none'
-  if (brainLabel) brainLabel.style.display = 'none'
-  if (brainLabelName) brainLabelName.textContent = ''
-  if (brainLabelDesc) brainLabelDesc.textContent = ''
-  if (brainSelectViewReset) brainSelectViewReset.style.display = 'block'
-  if (gameViewReset) gameViewReset.style.display = 'none'
-  if (gameShellReset) {
-    gameShellReset.innerHTML = '<div class="center-box" style="min-height: 300px"><div class="game-inner-title">영역을 선택해 주세요</div></div>'
-  }
-const STORAGE_KEY = "brain_game_stats_v4";
-      const SETTINGS_KEY = "brain_game_settings_v1";
-      const TODAY_SCORE_KEY = "brain_today_score_v2";
+export const STORAGE_KEY = "brain_game_stats_v4";
+export const SETTINGS_KEY = "brain_game_settings_v1";
+export const TODAY_SCORE_KEY = "brain_today_score_v2";
 
-      const regionImages = {
+export const regionImages = {
         frontal: "/img/frontal-lobe.png",
         parietal: "/img/parietal-lobe.png",
         temporal: "/img/hippocampus.png",
@@ -48,7 +10,7 @@ const STORAGE_KEY = "brain_game_stats_v4";
         cerebellum: "/img/cerebellum.png",
       };
 
-      const regionData = {
+export const regionData = {
         frontal: {
           key: "frontal",
           name: "전두엽",
@@ -1313,660 +1275,74 @@ const STORAGE_KEY = "brain_game_stats_v4";
         },
       };
 
-      const defaultStats = () => ({
-        totalPlays: 0,
-        bestScore: 0,
-        totalCorrect: 0,
-        totalAttempts: 0,
-        bestReaction: null,
-        regions: {
-          frontal: {
-            plays: 0,
-            bestScore: 0,
-            correct: 0,
-            attempts: 0,
-            bestReaction: null,
-          },
-          parietal: {
-            plays: 0,
-            bestScore: 0,
-            correct: 0,
-            attempts: 0,
-            bestReaction: null,
-          },
-          temporal: {
-            plays: 0,
-            bestScore: 0,
-            correct: 0,
-            attempts: 0,
-            bestReaction: null,
-          },
-          occipital: {
-            plays: 0,
-            bestScore: 0,
-            correct: 0,
-            attempts: 0,
-            bestReaction: null,
-          },
-          cerebellum: {
-            plays: 0,
-            bestScore: 0,
-            correct: 0,
-            attempts: 0,
-            bestReaction: null,
-          },
-        },
-      });
-      const defaultSettings = () => ({ effectText: "on", resultHint: "on" });
+export const defaultStats = () => ({
+  totalPlays: 0,
+  bestScore: 0,
+  totalCorrect: 0,
+  totalAttempts: 0,
+  bestReaction: null,
+  regions: {
+    frontal: {
+      plays: 0,
+      bestScore: 0,
+      correct: 0,
+      attempts: 0,
+      bestReaction: null,
+    },
+    parietal: {
+      plays: 0,
+      bestScore: 0,
+      correct: 0,
+      attempts: 0,
+      bestReaction: null,
+    },
+    temporal: {
+      plays: 0,
+      bestScore: 0,
+      correct: 0,
+      attempts: 0,
+      bestReaction: null,
+    },
+    occipital: {
+      plays: 0,
+      bestScore: 0,
+      correct: 0,
+      attempts: 0,
+      bestReaction: null,
+    },
+    cerebellum: {
+      plays: 0,
+      bestScore: 0,
+      correct: 0,
+      attempts: 0,
+      bestReaction: null,
+    },
+  },
+});
 
-      let stats = loadStats();
-      let settings = loadSettings();
-      let todayScores = loadTodayScore();
-      let selectedRegionKey = null;
-      let activeGameState = null;
+export const defaultSettings = () => ({ effectText: "on", resultHint: "on" });
 
-      const brainSelectView = document.getElementById("brainSelectView");
-      const gameView = document.getElementById("gameView");
-      const gameShell = document.getElementById("gameShell");
+export const defaultTodayScores = () => ({
+  frontal: 0,
+  parietal: 0,
+  temporal: 0,
+  occipital: 0,
+  cerebellum: 0,
+});
 
-      function loadStats() {
-        try {
-          const p = JSON.parse(localStorage.getItem(STORAGE_KEY));
-          if (p && p.regions) return p;
-        } catch (e) {}
-        return defaultStats();
-      }
-      function saveStats() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(stats));
-      }
-      function loadSettings() {
-        try {
-          const p = JSON.parse(localStorage.getItem(SETTINGS_KEY));
-          if (p) return p;
-        } catch (e) {}
-        return defaultSettings();
-      }
-      function saveSettings() {
-        localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-      }
-      function loadTodayScore() {
-        try {
-          const d = JSON.parse(localStorage.getItem(TODAY_SCORE_KEY));
-          const today = new Date().toISOString().slice(0, 10);
-          if (d && d.date === today && d.scores && typeof d.scores === "object")
-            return d.scores;
-        } catch (e) {}
-        return {
-          frontal: 0,
-          parietal: 0,
-          temporal: 0,
-          occipital: 0,
-          cerebellum: 0,
-        };
-      }
-      function saveTodayScore() {
-        localStorage.setItem(
-          TODAY_SCORE_KEY,
-          JSON.stringify({
-            date: new Date().toISOString().slice(0, 10),
-            scores: todayScores,
-          }),
-        );
-      }
-      function updateScoreDisplay() {
-        const el = document.getElementById("todayScoreDisplay");
-        if (el && selectedRegionKey)
-          el.textContent = `점수: ${todayScores[selectedRegionKey]}`;
-      }
+export const temporalWords = [
+  "사과",
+  "바나나",
+  "포도",
+  "수박",
+  "복숭아",
+  "딸기",
+  "귤",
+  "참외",
+  "레몬",
+  "자두",
+  "배",
+  "키위",
+];
 
-      /* ── 뇌 맵 ── */
-      function ptsStr(pts) {
-        return pts.map((p) => p.join(",")).join(" ");
-      }
-
-      function initBrainMap() {
-        const svg = document.getElementById("brainSvg");
-        Object.values(regionData).forEach((region) => {
-          const poly = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "polygon",
-          );
-          poly.classList.add("region");
-          poly.setAttribute("points", ptsStr(region.pts));
-          poly.addEventListener("mouseenter", () => hoverRegion(region.key));
-          poly.addEventListener("mouseleave", unhoverRegion);
-          poly.addEventListener("click", () => selectRegion(region.key));
-          poly.addEventListener(
-            "touchstart",
-            (e) => {
-              e.preventDefault();
-              selectRegion(region.key);
-            },
-            { passive: false },
-          );
-          svg.appendChild(poly);
-        });
-      }
-
-      function hoverRegion(key) {
-        const r = regionData[key];
-        document
-          .getElementById("brightRegion")
-          .setAttribute("points", ptsStr(r.pts));
-        document.getElementById("dimOverlay").style.display = "block";
-        document.getElementById("brainLabelName").textContent = r.name;
-        document.getElementById("brainLabelDesc").textContent = r.desc;
-        document.getElementById("brainLabel").style.display = "flex";
-      }
-      function unhoverRegion() {
-        document.getElementById("dimOverlay").style.display = "none";
-        document.getElementById("brainLabel").style.display = "none";
-      }
-
-      /* ── 선택 / 뒤로가기 ── */
-      function selectRegion(key) {
-        selectedRegionKey = key;
-        document.getElementById("gameRegionThumb").src = regionImages[key];
-        document.getElementById("gameRegionName").textContent =
-          regionData[key].name;
-        brainSelectView.style.display = "none";
-        gameView.style.display = "block";
-        updateScoreDisplay();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        startSelectedGame();
-      }
-      function backToBrain() {
-        selectedRegionKey = null;
-        activeGameState = null;
-        gameView.style.display = "none";
-        brainSelectView.style.display = "block";
-        unhoverRegion();
-      }
-
-      /* ── 게임 공통 ── */
-      function renderGameLayout(title, subtitle, html) {
-        gameShell.innerHTML = `
-        <div style="text-align:center;width:100%;">
-            <div class="game-inner-title">${title}</div>
-            <div class="game-inner-sub">${subtitle}</div>
-        </div>${html}`;
-      }
-      function startSelectedGame() {
-        if (!selectedRegionKey) return;
-        const k = selectedRegionKey;
-        if (k === "frontal") renderFrontalGame();
-        if (k === "parietal") renderParietalGame();
-        if (k === "temporal") renderTemporalGame();
-        if (k === "occipital") renderOccipitalGame();
-        if (k === "cerebellum") renderCerebellumGame();
-      }
-      function rs(k) {
-        return stats.regions[k];
-      }
-      function registerPlay(k) {
-        stats.totalPlays++;
-        rs(k).plays++;
-      }
-      function registerScore(k, s) {
-        stats.bestScore = Math.max(stats.bestScore, s);
-        rs(k).bestScore = Math.max(rs(k).bestScore, s);
-      }
-      function registerAttempt(k, ok) {
-        stats.totalAttempts++;
-        rs(k).attempts++;
-        if (ok) {
-          stats.totalCorrect++;
-          rs(k).correct++;
-        }
-      }
-      function registerReaction(k, ms) {
-        if (!stats.bestReaction || ms < stats.bestReaction)
-          stats.bestReaction = ms;
-        if (!rs(k).bestReaction || ms < rs(k).bestReaction)
-          rs(k).bestReaction = ms;
-      }
-      function finishGame(k, score) {
-        registerScore(k, score);
-        if (score > 0) {
-          todayScores[k] += score;
-          saveTodayScore();
-          updateScoreDisplay();
-        }
-        saveStats();
-        renderStats();
-      }
-
-      /* ── 전두엽 ── */
-      function renderFrontalGame() {
-        const nums = Array.from({ length: 4 }, () =>
-          Math.floor(Math.random() * 10),
-        );
-        activeGameState = { type: "frontal", answer: nums.join("") };
-        renderGameLayout(
-          "전두엽 게임 · 숫자 기억",
-          "아래 숫자를 잘 기억해 주세요!",
-          `<div class="center-box">
-            <div class="big-number">${nums.join("  ")}</div>
-            <div style="font-size:18px;color:var(--text-light);">2초 뒤 사라져요</div>
-        </div>`,
-        );
-        schedule(() => {
-          if (!activeGameState || activeGameState.type !== "frontal") return;
-          renderGameLayout(
-            "전두엽 게임 · 숫자 기억",
-            "기억한 숫자를 순서대로 입력해 보세요!",
-            `<div class="center-box">
-                <div class="answer-row">
-                    <input class="text-input" id="fi" placeholder="숫자 입력" autocomplete="off" inputmode="numeric"/>
-                    <button class="btn strong" id="fs">확인 ✓</button>
-                </div>
-            </div>`,
-          );
-          const inp = document.getElementById("fi");
-          inp.focus();
-          inp.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") submitFrontal();
-          });
-          document
-            .getElementById("fs")
-            .addEventListener("click", submitFrontal);
-        }, 2000);
-      }
-      function submitFrontal() {
-        if (!activeGameState || activeGameState.type !== "frontal") return;
-        const val = (document.getElementById("fi")?.value || "").replace(
-          /\s/g,
-          "",
-        );
-        const ok = val === activeGameState.answer;
-        if (ok) registerPlay("frontal");
-        registerAttempt("frontal", ok);
-        finishGame("frontal", ok ? 40 : 0);
-        renderGameLayout(
-          ok ? "정답이에요! 🎉" : "아쉽지만 다시 해봐요!",
-          ok
-            ? "기억력이 정말 좋네요!"
-            : `정답은 [${activeGameState.answer}] 이었어요`,
-          `<div class="center-box">
-            <div class="result-emoji">${ok ? "⭐" : "💪"}</div>
-            <div class="result-msg">${ok ? "정 답!" : "오 답"}</div>
-            <button class="btn strong" id="rf">다시하기 🔄</button>
-        </div>`,
-        );
-        document
-          .getElementById("rf")
-          .addEventListener("click", startSelectedGame);
-      }
-
-      /* ── 두정엽 ── */
-      function renderParietalGame() {
-        const ti = Math.floor(Math.random() * 9);
-        activeGameState = { type: "parietal", ti };
-        const labels = Array.from({ length: 9 }, (_, i) =>
-          i === ti ? "⭐" : "○",
-        );
-        renderGameLayout(
-          "두정엽 게임 · 위치 찾기",
-          `⭐ 칸을 찾아서 눌러 주세요! (${Math.floor(ti / 3) + 1}행 ${(ti % 3) + 1}열)`,
-          `<div class="center-box">
-            <div class="quiz-grid" id="pg">
-                ${labels.map((l, i) => `<button class="quiz-cell" data-i="${i}">${l}</button>`).join("")}
-            </div>
-        </div>`,
-        );
-        document.querySelectorAll("#pg .quiz-cell").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const ok = Number(btn.dataset.i) === activeGameState.ti;
-            if (ok) registerPlay("parietal");
-            registerAttempt("parietal", ok);
-            finishGame("parietal", ok ? 30 : 0);
-            renderGameLayout(
-              ok ? "정답이에요! 🎉" : "아쉽지만 다시 해봐요!",
-              ok
-                ? "위치를 잘 찾았어요!"
-                : `정답은 ${Math.floor(ti / 3) + 1}행 ${(ti % 3) + 1}열 이었어요`,
-              `<div class="center-box">
-                    <div class="result-emoji">${ok ? "⭐" : "💪"}</div>
-                    <div class="result-msg">${ok ? "정 답!" : "오 답"}</div>
-                    <button class="btn strong" id="rp">다시하기 🔄</button>
-                </div>`,
-            );
-            document
-              .getElementById("rp")
-              .addEventListener("click", startSelectedGame);
-          });
-        });
-      }
-
-      /* ── 측두엽 ── */
-      function renderTemporalGame() {
-        const all = [
-          "사과",
-          "바나나",
-          "포도",
-          "수박",
-          "복숭아",
-          "딸기",
-          "귤",
-          "참외",
-          "레몬",
-          "자두",
-          "배",
-          "키위",
-        ];
-        const sel = [...all].sort(() => Math.random() - 0.5).slice(0, 3);
-        activeGameState = { type: "temporal", sel, picked: new Set() };
-        renderGameLayout(
-          "측두엽 게임 · 단어 기억",
-          "아래 단어들을 잘 기억해 주세요!",
-          `<div class="center-box">
-            <div class="big-word" style="font-size:44px;letter-spacing:6px;">${sel.join("  ·  ")}</div>
-            <div style="font-size:18px;color:var(--text-light);">잠시 뒤 선택 화면으로 바뀌어요</div>
-        </div>`,
-        );
-        schedule(() => {
-          if (!activeGameState || activeGameState.type !== "temporal") return;
-          const wrongs = all
-            .filter((w) => !sel.includes(w))
-            .sort(() => Math.random() - 0.5)
-            .slice(0, 5);
-          const choices = [...sel, ...wrongs].sort(() => Math.random() - 0.5);
-          renderGameLayout(
-            "측두엽 게임 · 단어 기억",
-            "아까 본 단어를 모두 눌러서 선택해 주세요!",
-            `<div class="center-box">
-                <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:480px;">
-                    ${choices.map((w) => `<button type="button" class="btn ghost temporal-choice" data-w="${w}" style="font-size:20px;padding:16px 22px;min-width:110px;">${w}</button>`).join("")}
-                </div>
-                <button type="button" class="btn strong" id="ts">확인 ✓</button>
-            </div>`,
-          );
-          document.querySelectorAll(".temporal-choice").forEach((btn) => {
-            btn.addEventListener("click", () => {
-              const w = btn.dataset.w;
-              if (activeGameState.picked.has(w)) {
-                activeGameState.picked.delete(w);
-                btn.classList.remove("selected");
-              } else {
-                activeGameState.picked.add(w);
-                btn.classList.add("selected");
-              }
-            });
-          });
-          document.getElementById("ts").addEventListener("click", () => {
-            const as = new Set(activeGameState.sel),
-              pk = activeGameState.picked;
-            let ok = pk.size === as.size;
-            if (ok)
-              for (const w of as)
-                if (!pk.has(w)) {
-                  ok = false;
-                  break;
-                }
-            if (ok) registerPlay("temporal");
-            registerAttempt("temporal", ok);
-            finishGame("temporal", ok ? 30 : 0);
-            renderGameLayout(
-              ok ? "정답이에요! 🎉" : "아쉽지만 다시 해봐요!",
-              `정답 단어: ${activeGameState.sel.join(", ")}`,
-              `<div class="center-box">
-                    <div class="result-emoji">${ok ? "⭐" : "💪"}</div>
-                    <div class="result-msg">${ok ? "정 답!" : "오 답"}</div>
-                    <button class="btn strong" id="rt">다시하기 🔄</button>
-                </div>`,
-            );
-            document
-              .getElementById("rt")
-              .addEventListener("click", startSelectedGame);
-          });
-        }, 2500);
-      }
-
-      /* ── 후두엽 ── */
-      function renderOccipitalGame() {
-        const shapes = ["●", "■", "▲", "◆", "★"];
-        const target = shapes[Math.floor(Math.random() * shapes.length)];
-        const pool = [target];
-        while (pool.length < 9) {
-          const s = shapes[Math.floor(Math.random() * shapes.length)];
-          if (s !== target) pool.push(s);
-        }
-        const board = pool.sort(() => Math.random() - 0.5);
-        activeGameState = {
-          type: "occipital",
-          target,
-          clicked: new Set(),
-          board,
-        };
-        renderGameLayout(
-          "후두엽 게임 · 모양 찾기",
-          `"${target}" 모양을 모두 찾아서 눌러 주세요!`,
-          `<div class="center-box">
-            <div class="visual-grid" id="og">
-                ${board.map((s, i) => `<button type="button" class="visual-card" data-i="${i}">${s}</button>`).join("")}
-            </div>
-            <button type="button" class="btn strong" id="od">확인 ✓</button>
-        </div>`,
-        );
-        document.querySelectorAll("#og .visual-card").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const i = Number(btn.dataset.i);
-            if (activeGameState.clicked.has(i)) {
-              activeGameState.clicked.delete(i);
-              btn.classList.remove("selected");
-            } else {
-              activeGameState.clicked.add(i);
-              btn.classList.add("selected");
-            }
-          });
-        });
-        document.getElementById("od").addEventListener("click", () => {
-          const ci = board
-            .map((s, i) => (s === target ? i : -1))
-            .filter((i) => i >= 0);
-          let ok = ci.length === activeGameState.clicked.size;
-          if (ok)
-            for (const i of ci)
-              if (!activeGameState.clicked.has(i)) {
-                ok = false;
-                break;
-              }
-          if (ok) registerPlay("occipital");
-          registerAttempt("occipital", ok);
-          finishGame("occipital", ok ? 30 : 0);
-          renderGameLayout(
-            ok ? "정답이에요! 🎉" : "아쉽지만 다시 해봐요!",
-            `찾아야 했던 모양: ${target}`,
-            `<div class="center-box">
-                <div class="result-emoji">${ok ? "⭐" : "💪"}</div>
-                <div class="result-msg">${ok ? "정 답!" : "오 답"}</div>
-                <button class="btn strong" id="ro">다시하기 🔄</button>
-            </div>`,
-          );
-          document
-            .getElementById("ro")
-            .addEventListener("click", startSelectedGame);
-        });
-      }
-
-      /* ── 소뇌 ── */
-      function renderCerebellumGame() {
-        const waitMs = Math.floor(Math.random() * 1500) + 1200;
-        activeGameState = {
-          type: "cerebellum",
-          ready: false,
-          startedAt: null,
-          tooSoon: false,
-        };
-        renderGameLayout(
-          "소뇌 게임 · 반응속도",
-          "화면이 바뀌면 바로 눌러 주세요!",
-          `<div class="center-box">
-            <div class="reaction-box" id="rb" style="font-size:26px;">⏳ 기다려 주세요...</div>
-        </div>`,
-        );
-        const rb = document.getElementById("rb");
-        rb.addEventListener("click", () => {
-          if (!activeGameState || activeGameState.type !== "cerebellum") return;
-          if (!activeGameState.ready) {
-            activeGameState.tooSoon = true;
-            registerAttempt("cerebellum", false);
-            finishGame("cerebellum", 0);
-            renderGameLayout(
-              "아직 이른걸요! 😅",
-              "파란색으로 바뀔 때까지 기다려 주세요!",
-              `<div class="center-box">
-                    <div class="result-emoji">⏳</div>
-                    <div class="result-msg">조금 빨랐어요</div>
-                    <button class="btn strong" id="rc">다시하기 🔄</button>
-                </div>`,
-            );
-            document
-              .getElementById("rc")
-              .addEventListener("click", startSelectedGame);
-            return;
-          }
-          const ms = Date.now() - activeGameState.startedAt;
-          registerPlay("cerebellum");
-          registerAttempt("cerebellum", true);
-          registerReaction("cerebellum", ms);
-          const score = ms <= 300 ? 30 : ms <= 500 ? 20 : ms <= 800 ? 10 : 5;
-          finishGame("cerebellum", score);
-          renderGameLayout(
-            ms <= 400
-              ? "엄청 빠르네요! 🎉"
-              : ms <= 700
-                ? "잘했어요! 😊"
-                : "다음엔 더 빠르게!",
-            `반응 속도: ${ms}밀리초`,
-            `<div class="center-box">
-                <div class="big-number">${ms}<span style="font-size:32px;">ms</span></div>
-                <div style="font-size:20px;color:var(--text-mid);">이번 점수: ${score}점</div>
-                <button class="btn strong" id="rc">다시하기 🔄</button>
-            </div>`,
-          );
-          document
-            .getElementById("rc")
-            .addEventListener("click", startSelectedGame);
-        });
-        schedule(() => {
-          if (
-            !activeGameState ||
-            activeGameState.type !== "cerebellum" ||
-            activeGameState.tooSoon
-          )
-            return;
-          activeGameState.ready = true;
-          activeGameState.startedAt = Date.now();
-          rb.innerHTML = "지금 눌러요! 👆";
-          rb.style.background = "var(--blue-pale)";
-          rb.style.borderColor = "var(--blue-dark)";
-          rb.style.borderStyle = "solid";
-          rb.style.color = "var(--blue-dark)";
-          rb.style.fontSize = "36px";
-        }, waitMs);
-      }
-
-      /* ── 통계 ── */
-      function fmtR(ms) {
-        return ms == null ? "-" : `${ms}ms`;
-      }
-      function acc(c, a) {
-        return a ? `${Math.round((c / a) * 100)}%` : "0%";
-      }
-
-      function renderStats() {
-        document.getElementById("totalPlaysValue").textContent =
-          stats.totalPlays;
-        document.getElementById("bestScoreValue").textContent = stats.bestScore;
-        document.getElementById("accuracyValue").textContent = acc(
-          stats.totalCorrect,
-          stats.totalAttempts,
-        );
-        document.getElementById("bestReactionValue").textContent = fmtR(
-          stats.bestReaction,
-        );
-        const body = document.getElementById("quickStatsModalBody");
-        if (body)
-          body.innerHTML = `
-        <div class="setting-item">전체 클리어 횟수 <strong>${stats.totalPlays}</strong></div>
-        <div class="setting-item">최고 점수 <strong>${stats.bestScore}</strong></div>
-        <div class="setting-item">전체 정답률 <strong>${acc(stats.totalCorrect, stats.totalAttempts)}</strong></div>
-        <div class="setting-item">최고 반응속도 <strong>${fmtR(stats.bestReaction)}</strong></div>`;
-        const detail = document.getElementById("detailStatsInModal");
-        if (!detail) return;
-        detail.innerHTML = "";
-        Object.values(regionData).forEach((region) => {
-          const r = stats.regions[region.key],
-            row = document.createElement("div");
-          row.className = "detail-row";
-          row.innerHTML = `
-            <div class="detail-row-head"><span>${region.name}</span><span>${region.desc}</span></div>
-            <div class="detail-meta">
-                <div>클리어 횟수<strong>${r.plays}</strong></div>
-                <div>최고 점수<strong>${r.bestScore}</strong></div>
-                <div>정답률<strong>${acc(r.correct, r.attempts)}</strong></div>
-                <div>최고 반응속도<strong>${fmtR(r.bestReaction)}</strong></div>
-            </div>`;
-          detail.appendChild(row);
-        });
-      }
-
-      function openModal(id) {
-        document.getElementById(id).classList.add("show");
-      }
-      function closeModal(id) {
-        document.getElementById(id).classList.remove("show");
-      }
-      function syncSettingsUI() {
-        document.getElementById("soundToggle").value = settings.effectText;
-        document.getElementById("autoShowStats").value = settings.resultHint;
-      }
-
-      /* ── 이벤트 리스너 ── */
-      document.getElementById("logoBtn").addEventListener("click", () => {
-        if (gameView.style.display !== "none") backToBrain();
-      });
-      document
-        .getElementById("backToBrainBtn")
-        .addEventListener("click", backToBrain);
-      document.getElementById("openStatsBtn").addEventListener("click", () => {
-        renderStats();
-        openModal("statsModal");
-      });
-      document
-        .getElementById("openSettingsBtn")
-        .addEventListener("click", () => openModal("settingsModal"));
-      document
-        .getElementById("closeSettingsBtn")
-        .addEventListener("click", () => closeModal("settingsModal"));
-      document
-        .getElementById("closeStatsBtn")
-        .addEventListener("click", () => closeModal("statsModal"));
-      document.getElementById("resetStatsBtn").addEventListener("click", () => {
-        if (!confirm("통계를 모두 초기화할까요?")) return;
-        stats = defaultStats();
-        saveStats();
-        renderStats();
-      });
-      document.getElementById("soundToggle").addEventListener("change", (e) => {
-        settings.effectText = e.target.value;
-        saveSettings();
-      });
-      document
-        .getElementById("autoShowStats")
-        .addEventListener("change", (e) => {
-          settings.resultHint = e.target.value;
-          saveSettings();
-        });
-
-      /* ── 초기화 ── */
-      initBrainMap();
-      renderStats();
-      syncSettingsUI();
-      updateScoreDisplay();
-  return () => {
-    destroyed = true
-    timers.forEach((id) => window.clearTimeout(id))
-  }
-}
+export const occipitalShapes = ["●", "■", "▲", "◆", "★"];

@@ -169,6 +169,9 @@
   align-items: center;
   gap: 6px;
   cursor: pointer;
+  border: none;
+  background: none;
+  font: inherit;
 }
 
 .avatar-page .avatar-img-wrap {
@@ -222,6 +225,14 @@
 /* ── 버튼 ── */
 .avatar-page .form-footer {
   padding: 0 32px 32px;
+}
+
+.avatar-page .form-error {
+  margin-top: 14px;
+  color: var(--danger);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
 }
 
 .avatar-page .submit-btn {
