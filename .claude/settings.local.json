@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /c/Users/qldnc/IdeaProjects/brain-code -maxdepth 3 -type f -name README* -o -name .cursorrules -o -name .cursor)",
+      "Bash(git -C /c/Users/qldnc/IdeaProjects/brain-code status --short)",
+      "Bash(xargs grep:*)"
+    ]
+  }
+}

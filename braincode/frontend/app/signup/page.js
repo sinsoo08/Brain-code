@@ -48,7 +48,7 @@ export default function SignupPage() {
     }));
   };
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     const email = form.email.trim();
     const password = form.password;
     const confirmPassword = form.confirmPassword;
@@ -69,17 +69,37 @@ export default function SignupPage() {
       return;
     }
 
-    if (password.length < 6) {
-      showAlert("비밀번호는 6자 이상이어야 해요.");
+    if (password.length < 8) {
+      showAlert("비밀번호는 8자 이상이어야 해요.");
       return;
     }
 
-    showAlert("회원가입이 완료되었습니다!", "success");
+    try {
+      const res = await fetch("http://localhost:8080/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+        credentials: "include",
+      });
 
-    if (navigateTimerRef.current) clearTimeout(navigateTimerRef.current);
-    navigateTimerRef.current = setTimeout(() => {
-      router.push("/kid");
-    }, 1000);
+      const data = await res.json();
+
+      if (!res.ok) {
+        showAlert(data.message || "회원가입에 실패했습니다.");
+        return;
+      }
+
+      localStorage.setItem("accessToken", data.token);
+      localStorage.setItem("userEmail", data.email);
+      showAlert("회원가입이 완료되었습니다!", "success");
+
+      if (navigateTimerRef.current) clearTimeout(navigateTimerRef.current);
+      navigateTimerRef.current = setTimeout(() => {
+        router.push("/kid");
+      }, 1000);
+    } catch {
+      showAlert("서버에 연결할 수 없습니다. 백엔드 서버를 확인해 주세요.");
+    }
   };
 
   return (

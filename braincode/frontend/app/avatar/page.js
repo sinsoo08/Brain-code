@@ -30,9 +30,40 @@ export default function AvatarPage() {
     }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!selectedAvatar) {
       setErrorMessage("캐릭터를 선택해 주세요.");
+      return;
+    }
+
+    const kidName = sessionStorage.getItem("kidName");
+    const kidBirthYear = sessionStorage.getItem("kidBirthYear");
+    const kidBirthDate = sessionStorage.getItem("kidBirthDate");
+    const accessToken = localStorage.getItem("accessToken");
+
+    try {
+      const res = await fetch("http://localhost:8080/api/kids", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          name: kidName,
+          birthYear: kidBirthYear,
+          birthDate: kidBirthDate,
+          avatar: selectedAvatar.src,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setErrorMessage(data.message || "정보 저장에 실패했습니다.");
+        return;
+      }
+    } catch {
+      setErrorMessage("서버에 연결할 수 없습니다. 백엔드 서버를 확인해 주세요.");
       return;
     }
 

@@ -47,7 +47,7 @@ export default function LoginPage() {
     }));
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     const email = form.email.trim();
     const password = form.password;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -62,14 +62,32 @@ export default function LoginPage() {
       return;
     }
 
-    localStorage.setItem("isLoggedIn", "true");
-    localStorage.setItem("userEmail", email);
-    showAlert("로그인되었습니다.", "success");
+    try {
+      const res = await fetch("http://localhost:8080/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+        credentials: "include",
+      });
 
-    if (navigateTimerRef.current) clearTimeout(navigateTimerRef.current);
-    navigateTimerRef.current = setTimeout(() => {
-      router.push("/game");
-    }, 1000);
+      const data = await res.json();
+
+      if (!res.ok) {
+        showAlert(data.message || "로그인에 실패했습니다.");
+        return;
+      }
+
+      localStorage.setItem("accessToken", data.token);
+      localStorage.setItem("userEmail", data.email);
+      showAlert("로그인되었습니다.", "success");
+
+      if (navigateTimerRef.current) clearTimeout(navigateTimerRef.current);
+      navigateTimerRef.current = setTimeout(() => {
+        router.push("/game");
+      }, 1000);
+    } catch {
+      showAlert("서버에 연결할 수 없습니다. 백엔드 서버를 확인해 주세요.");
+    }
   };
 
   return (
