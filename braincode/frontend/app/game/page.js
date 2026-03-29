@@ -628,7 +628,7 @@ export default function GamePage() {
     if (activeGame.type === "temporal") {
       return (
         <div className="center-box">
-          <div className="game-inner-title">측두엽 게임 · 단어 기억</div>
+          <div className="game-inner-title">해마 게임 · 단어 기억</div>
           <div className="game-inner-sub">
             {activeGame.phase === "memorize"
               ? "아래 단어들을 잘 기억해 주세요!"
@@ -840,66 +840,134 @@ export default function GamePage() {
         </div>
       </main>
 
-      <div
-        className={`modal-backdrop ${isSettingsOpen ? "show" : ""}`}
-        id="settingsModal"
-        onClick={(event) => {
-          if (event.target === event.currentTarget) setIsSettingsOpen(false);
-        }}
-      >
-        <div className="modal">
-          <div className="modal-head">
-            <h3>설정</h3>
-            <button
-              className="btn ghost"
-              id="closeSettingsBtn"
-              style={{ fontSize: "15px", padding: "10px 18px" }}
-              type="button"
-              onClick={() => setIsSettingsOpen(false)}
-            >
-              닫기
-            </button>
-          </div>
-          <p>게임 진행에 필요한 기본 옵션입니다.</p>
-          <div className="modal-grid">
-            <div className="setting-item">
-              <label htmlFor="soundToggle">효과 문구 표시</label>
-              <select
-                className="select"
-                id="soundToggle"
-                value={settings.effectText}
-                onChange={(event) =>
-                  setSettings((previousSettings) => ({
-                    ...previousSettings,
-                    effectText: event.target.value,
-                  }))
-                }
-              >
-                <option value="on">켜기</option>
-                <option value="off">끄기</option>
-              </select>
+      {isSettingsOpen && (
+        <div className="s-modal open" onClick={(e) => { if(e.target.classList.contains('s-modal')) setIsSettingsOpen(false) }}>
+          <div className="s-modal-content">
+            <div className="s-modal-header">
+              <span className="s-modal-title">설정</span>
+              <button className="s-close-btn" onClick={() => setIsSettingsOpen(false)}>✕</button>
             </div>
-            <div className="setting-item">
-              <label htmlFor="autoShowStats">결과 뒤 통계 문구</label>
-              <select
-                className="select"
-                id="autoShowStats"
-                value={settings.resultHint}
-                onChange={(event) =>
-                  setSettings((previousSettings) => ({
-                    ...previousSettings,
-                    resultHint: event.target.value,
-                  }))
-                }
-              >
-                <option value="on">켜기</option>
-                <option value="off">끄기</option>
-              </select>
+
+            <div className="s-tab-bar">
+              {[['game','🎮','게임'],['sound','🔊','소리'],['account','👤','계정']].map(([id,icon,label]) => (
+                <button key={id} className={`s-tab-btn ${settings.activeTab === id ? 'active' : ''}`}
+                  onClick={() => setSettings({...settings, activeTab: id})}>
+                  <span className="s-tab-icon">{icon}</span>
+                  <span className="s-tab-label">{label}</span>
+                </button>
+              ))}
+            </div>
+
+            {(settings.activeTab ?? 'game') === 'game' && (
+              <div className="s-tab-panel active">
+                <div className="s-row">
+                  <div className="s-info">
+                    <span className="s-label">난이도</span>
+                    <span className="s-desc">문제의 어려움을 조절해요</span>
+                  </div>
+                  <div className="s-seg">
+                    {['쉬움','보통','어려움'].map(d => (
+                      <button key={d} className={`s-seg-btn ${settings.difficulty === d ? 'active' : ''}`}
+                        onClick={() => setSettings({...settings, difficulty: d})}>{d}</button>
+                    ))}
+                  </div>
+                </div>
+                <div className="s-row">
+                  <div className="s-info">
+                    <span className="s-label">힌트 보기</span>
+                    <span className="s-desc">문제 풀 때 힌트를 보여줘요</span>
+                  </div>
+                  <label className="s-toggle">
+                    <input type="checkbox" checked={settings.hint ?? true}
+                      onChange={(e) => setSettings({...settings, hint: e.target.checked})} />
+                    <span className="s-track"><span className="s-thumb"></span></span>
+                  </label>
+                </div>
+                <div className="s-row">
+                  <div className="s-info">
+                    <span className="s-label">타이머</span>
+                    <span className="s-desc">제한 시간을 표시해요</span>
+                  </div>
+                  <label className="s-toggle">
+                    <input type="checkbox" checked={settings.timer ?? false}
+                      onChange={(e) => setSettings({...settings, timer: e.target.checked})} />
+                    <span className="s-track"><span className="s-thumb"></span></span>
+                  </label>
+                </div>
+              </div>
+            )}
+
+            {settings.activeTab === 'sound' && (
+              <div className="s-tab-panel active">
+                <div className="s-row">
+                  <div className="s-info">
+                    <span className="s-label">효과음</span>
+                    <span className="s-desc">버튼 클릭·정답 효과음</span>
+                  </div>
+                  <label className="s-toggle">
+                    <input type="checkbox" checked={settings.sfx ?? true}
+                      onChange={(e) => setSettings({...settings, sfx: e.target.checked})} />
+                    <span className="s-track"><span className="s-thumb"></span></span>
+                  </label>
+                </div>
+                <div className="s-row">
+                  <div className="s-info">
+                    <span className="s-label">배경음악</span>
+                    <span className="s-desc">게임 중 배경음악을 틀어요</span>
+                  </div>
+                  <label className="s-toggle">
+                    <input type="checkbox" checked={settings.bgm ?? true}
+                      onChange={(e) => setSettings({...settings, bgm: e.target.checked})} />
+                    <span className="s-track"><span className="s-thumb"></span></span>
+                  </label>
+                </div>
+                <div className="s-row s-row-col">
+                  <div className="s-info">
+                    <span className="s-label">전체 볼륨</span>
+                    <span className="s-desc">소리 크기를 조절해요</span>
+                  </div>
+                  <div className="s-slider-wrap">
+                    <span className="s-slider-icon">🔈</span>
+                    <input type="range" className="s-slider" min="0" max="100" value={settings.volume ?? 70}
+                      onChange={(e) => setSettings({...settings, volume: e.target.value})} />
+                    <span className="s-slider-icon">🔊</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {settings.activeTab === 'account' && (
+              <div className="s-tab-panel active">
+                <div className="s-row">
+                  <div className="s-info">
+                    <span className="s-label">이름</span>
+                    <span className="s-desc">프로필에 표시되는 이름</span>
+                  </div>
+                  <input type="text" className="s-input" placeholder="이름 입력" />
+                </div>
+                <div className="s-row">
+                  <div className="s-info">
+                    <span className="s-label">아바타 변경</span>
+                    <span className="s-desc">캐릭터를 다시 골라요</span>
+                  </div>
+                  <button className="s-link-btn" onClick={() => router.push('/avatar')}>변경 →</button>
+                </div>
+                <div className="s-row">
+                  <div className="s-info">
+                    <span className="s-label">기록 초기화</span>
+                    <span className="s-desc">모든 학습 기록을 지워요</span>
+                  </div>
+                  <button className="s-danger-btn">초기화</button>
+                </div>
+              </div>
+            )}
+
+            <div className="s-modal-footer">
+              <button className="s-save-btn" onClick={() => setIsSettingsOpen(false)}>저장하기</button>
             </div>
           </div>
         </div>
-      </div>
-
+      )}
     </div>
   );
 }

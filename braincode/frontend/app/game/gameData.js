@@ -519,7 +519,7 @@ export const regionData = {
         },
         temporal: {
           key: "temporal",
-          name: "측두엽",
+          name: "해마",
           desc: "기억 · 언어 처리",
           pts: [
             [478, 451],
