@@ -7,34 +7,46 @@ import "./main.css";
 
 export default function MainPage() {
   const router = useRouter();
-  const images = ["/img/phone.png"];
+
+  const images = [
+    "/img/phone1.png",
+    "/img/phone2.png",
+    "/img/phone3.png",
+    "/img/phone4.png",
+    "/img/phone5.png",
+    "/img/phone6.png",
+  ];
+
   const [current, setCurrent] = useState(0);
+  const [fade, setFade] = useState(true);
 
-  const nextSlide = () => {
-    setCurrent((prev) => (prev + 1) % images.length);
+  const changeSlide = (nextIndex) => {
+    setFade(false);
+    setTimeout(() => {
+      setCurrent(nextIndex);
+      setFade(true);
+    }, 150);
   };
 
-  const prevSlide = () => {
-    setCurrent((prev) => (prev - 1 + images.length) % images.length);
-  };
+  const nextSlide = () => changeSlide((current + 1) % images.length);
+  const prevSlide = () => changeSlide((current - 1 + images.length) % images.length);
 
   return (
     <div className="main-page">
+
+      {/* ── NAV ── */}
       <nav className="navbar">
         <Link href="/" className="nav-left">
           <img src="/img/brain-blue.png" className="brain-logo" alt="브레인 코드 로고" />
           <span className="logo-text">브레인 코드</span>
         </Link>
         <ul className="menu">
-          <li>
-            <Link href="/login">로그인</Link>
-          </li>
-          <li>
-            <Link href="/signup">회원가입</Link>
-          </li>
+          <li><Link href="/login">로그인</Link></li>
+          <li><Link href="/signup">회원가입</Link></li>
         </ul>
       </nav>
 
+      {/* ── HERO ── */}
       <section className="hero">
         <div className="hero-badge">발달장애 아동을 위한 인지 훈련 플랫폼</div>
         <h1>
@@ -52,6 +64,7 @@ export default function MainPage() {
         </button>
       </section>
 
+      {/* ── PROBLEM CARDS ── */}
       <section className="section">
         <h2 className="section-title">이런 어려움을 함께 해결해요</h2>
         <div className="cards-grid">
@@ -78,23 +91,38 @@ export default function MainPage() {
         </div>
       </section>
 
+      {/* ── PHONE SLIDER SECTION ── */}
       <section className="phone-section">
         <h2 className="section-title">발달장애 아동의 학습 흐름을 쉽게 확인할 수 있어요</h2>
+
         <div className="phone-wrap">
-          <div className="phone-frame">
-            <img
-              src={images[current]}
-              alt="앱 화면 미리보기"
-              style={{ transition: "opacity 0.3s ease" }}
-            />
-            <button className="slide-btn prev" type="button" onClick={prevSlide}>
-              이전
-            </button>
-            <button className="slide-btn next" type="button" onClick={nextSlide}>
-              다음
-            </button>
+          {/* 슬라이더 */}
+          <div className="slider-area">
+            <div className="slider-row">
+              <button className="slide-btn prev" type="button" onClick={prevSlide}>←</button>
+              <div className="slider-img-wrap">
+                <img
+                  src={images[current]}
+                  alt={`앱 화면 미리보기 ${current + 1}`}
+                  style={{ opacity: fade ? 1 : 0, transition: "opacity 0.15s ease" }}
+                />
+              </div>
+              <button className="slide-btn next" type="button" onClick={nextSlide}>→</button>
+            </div>
+            <div className="slide-dots">
+              {images.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  className={`slide-dot${i === current ? " active" : ""}`}
+                  onClick={() => changeSlide(i)}
+                  aria-label={`${i + 1}번 이미지로 이동`}
+                />
+              ))}
+            </div>
           </div>
 
+          {/* feature list */}
           <div className="feature-list">
             <h3>부모 연동 기능</h3>
             <hr className="feature-divider" />
@@ -114,6 +142,7 @@ export default function MainPage() {
         </div>
       </section>
 
+      {/* ── CTA ── */}
       <section className="cta-section">
         <div className="cta-banner">
           <p>

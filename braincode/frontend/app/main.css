@@ -9,7 +9,9 @@
   color: var(--text-dark);
 }
 
-/* ── NAV ── */
+/* ════════════════════════════════
+   NAV
+════════════════════════════════ */
 .main-page .navbar {
   position: sticky;
   top: 0;
@@ -18,14 +20,14 @@
   justify-content: space-between;
   align-items: center;
   background-color: var(--blue-dark);
-  padding: 14px 40px;
+  padding: 16px 60px;
   box-shadow: 0 2px 12px rgba(74, 126, 199, 0.25);
 }
 
 .main-page .nav-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   text-decoration: none;
   color: white;
 }
@@ -55,7 +57,7 @@
   text-decoration: none;
   font-size: 15px;
   font-weight: 500;
-  padding: 6px 14px;
+  padding: 6px 16px;
   border-radius: 20px;
   transition: background 0.2s;
 }
@@ -64,7 +66,9 @@
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* ── HERO ── */
+/* ════════════════════════════════
+   HERO
+════════════════════════════════ */
 .main-page .hero {
   background: linear-gradient(
     160deg,
@@ -72,7 +76,7 @@
     var(--blue-mid) 60%,
     var(--blue-pale) 100%
   );
-  padding: 80px 40px 100px;
+  padding: 100px 60px 120px;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -81,50 +85,50 @@
 .main-page .hero::before {
   content: "";
   position: absolute;
-  width: 500px;
-  height: 500px;
+  width: 600px;
+  height: 600px;
   background: rgba(255, 255, 255, 0.07);
   border-radius: 50%;
-  top: -150px;
-  right: -100px;
+  top: -180px;
+  right: -120px;
 }
 
 .main-page .hero::after {
   content: "";
   position: absolute;
-  width: 300px;
-  height: 300px;
+  width: 360px;
+  height: 360px;
   background: rgba(255, 255, 255, 0.06);
   border-radius: 50%;
-  bottom: -80px;
-  left: -60px;
+  bottom: -100px;
+  left: -80px;
 }
 
 .main-page .hero-badge {
   display: inline-block;
   background: rgba(255, 255, 255, 0.2);
   color: white;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
-  padding: 6px 16px;
+  padding: 7px 20px;
   border-radius: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .main-page .hero h1 {
   font-family: "Jua", sans-serif;
-  font-size: clamp(28px, 5vw, 48px);
+  font-size: 48px;
   color: white;
-  margin: 0 0 16px;
+  margin: 0 0 20px;
   line-height: 1.4;
   font-weight: 400;
 }
 
 .main-page .hero p {
-  font-size: 17px;
+  font-size: 18px;
   color: rgba(255, 255, 255, 0.85);
-  margin: 0 0 36px;
+  margin: 0 0 40px;
   line-height: 1.8;
 }
 
@@ -132,16 +136,14 @@
   display: inline-block;
   background: white;
   color: var(--blue-dark);
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
-  padding: 14px 36px;
+  padding: 16px 44px;
   border-radius: 30px;
   border: none;
   cursor: pointer;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .main-page .hero-btn:hover {
@@ -149,38 +151,39 @@
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
 }
 
-/* ── PROBLEM CARDS ── */
+/* ════════════════════════════════
+   PROBLEM CARDS
+════════════════════════════════ */
 .main-page .section {
-  padding: 64px 40px;
+  padding: 80px 60px;
 }
 
 .main-page .section-title {
   font-family: "Jua", sans-serif;
-  font-size: clamp(20px, 3vw, 28px);
+  font-size: 28px;
   text-align: center;
   color: var(--text-dark);
-  margin: 0 0 40px;
+  margin: 0 0 48px;
   font-weight: 400;
 }
 
+/* 데스크탑: 4열 고정 */
 .main-page .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-  max-width: 1100px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 .main-page .card {
   background: white;
   border-radius: 20px;
-  padding: 28px 20px;
+  padding: 36px 24px;
   text-align: center;
   box-shadow: 0 4px 16px rgba(74, 126, 199, 0.1);
   border: 1.5px solid var(--blue-pale);
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .main-page .card:hover {
@@ -189,15 +192,15 @@
 }
 
 .main-page .card-icon {
-  font-size: 36px;
-  margin-bottom: 14px;
+  font-size: 40px;
+  margin-bottom: 16px;
 }
 
 .main-page .card h3 {
   font-family: "Jua", sans-serif;
-  font-size: 18px;
+  font-size: 19px;
   color: var(--blue-dark);
-  margin: 0 0 8px;
+  margin: 0 0 10px;
   font-weight: 400;
 }
 
@@ -205,125 +208,167 @@
   font-size: 14px;
   color: var(--text-mid);
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
-/* ── PHONE MOCKUP ── */
+/* ════════════════════════════════
+   PHONE SLIDER  (데스크탑)
+   슬라이더 좌 / feature 우 — 가로 2단
+════════════════════════════════ */
 .main-page .phone-section {
   background: white;
-  padding: 64px 40px;
+  padding: 80px 60px;
 }
 
 .main-page .phone-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 60px;
-  max-width: 1000px;
+  gap: 80px;
+  max-width: 1100px;
   margin: 0 auto;
-  flex-wrap: wrap;
 }
 
-.main-page .phone-frame {
-  position: relative;
-  width: min(340px, 85vw);
+/* 슬라이더 블록 */
+.main-page .slider-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
   flex-shrink: 0;
 }
 
-.main-page .phone-frame img {
-  width: 100%;
-  border-radius: 16px;
-  display: block;
+/* 화살표 + 이미지 가로 배치 */
+.main-page .slider-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
+/* 데스크탑 이미지 크기 */
+.main-page .slider-img-wrap {
+  width: 320px;
+}
+
+.main-page .slider-img-wrap img {
+  width: 100%;
+  border-radius: 20px;
+  display: block;
+  box-shadow: 0 8px 32px rgba(74, 126, 199, 0.18);
+}
+
+/* 화살표 버튼 */
 .main-page .slide-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
   background: var(--blue-dark);
   color: white;
   border: none;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  font-size: 16px;
+  font-size: 20px;
   cursor: pointer;
   opacity: 0.85;
-  transition: opacity 0.2s;
-}
-.main-page .slide-btn:hover {
-  opacity: 1;
-}
-.main-page .slide-btn.prev {
-  left: -18px;
-}
-.main-page .slide-btn.next {
-  right: -18px;
+  transition: opacity 0.2s, transform 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
+.main-page .slide-btn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* dots */
+.main-page .slide-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.main-page .slide-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: none;
+  background: var(--blue-pale);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.main-page .slide-dot.active {
+  background: var(--blue-dark);
+  transform: scale(1.4);
+}
+
+/* feature list */
 .main-page .feature-list {
   flex: 1;
-  min-width: 240px;
+  min-width: 260px;
 }
 
 .main-page .feature-list h3 {
   font-family: "Jua", sans-serif;
-  font-size: 24px;
+  font-size: 26px;
   color: var(--text-dark);
-  margin: 0 0 8px;
+  margin: 0 0 10px;
   font-weight: 400;
 }
 
 .main-page .feature-divider {
   border: none;
   border-top: 2px solid var(--blue-pale);
-  margin: 12px 0 20px;
+  margin: 14px 0 22px;
 }
 
 .main-page .feature-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 14px;
-  font-size: 16px;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-size: 17px;
   color: var(--text-mid);
 }
 
 .main-page .feature-item img {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   flex-shrink: 0;
 }
 
-/* ── CTA BANNER ── */
+/* ════════════════════════════════
+   CTA BANNER
+════════════════════════════════ */
 .main-page .cta-section {
-  padding: 44px 40px;
+  padding: 60px 60px;
   text-align: center;
 }
 
 .main-page .cta-banner {
-  max-width: 560px;
+  max-width: 600px;
   margin: 0 auto;
   background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid));
-  border-radius: 24px;
-  padding: 44px 36px;
+  border-radius: 28px;
+  padding: 52px 44px;
   color: white;
   box-shadow: 0 12px 32px rgba(74, 126, 199, 0.3);
 }
 
 .main-page .cta-banner p {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 500;
-  margin: 0 0 24px;
-  line-height: 1.6;
+  margin: 0 0 28px;
+  line-height: 1.7;
 }
 
 .main-page .cta-btn {
   background: white;
   color: var(--blue-dark);
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
-  padding: 13px 32px;
+  padding: 14px 36px;
   border-radius: 30px;
   border: none;
   cursor: pointer;
@@ -338,95 +383,130 @@
 /* ── FOOTER ── */
 .main-page footer {
   color: #c2daf0;
-  padding: 24px;
-  font-size: 13px;
-  align-items: center;
+  padding: 28px;
+  font-size: 14px;
   display: flex;
+  align-items: center;
   justify-content: center;
 }
 
-/* ── 반응형 ── */
 
-/* 태블릿 (768px 이하) */
-@media (max-width: 768px) {
+/* ════════════════════════════════
+   태블릿 (769px ~ 1024px)
+   카드 2열 / 슬라이더+feature 세로
+════════════════════════════════ */
+@media (min-width: 769px) and (max-width: 1024px) {
   .main-page .navbar {
-    padding: 12px 20px;
-  }
-  .main-page .brain-logo {
-    width: 36px;
-    height: 36px;
-  }
-  .main-page .logo-text {
-    font-size: 19px;
-  }
-  .main-page .menu {
-    gap: 4px;
-  }
-  .main-page .menu a {
-    font-size: 14px;
-    padding: 6px 10px;
+    padding: 14px 32px;
   }
 
   .main-page .hero {
-    padding: 56px 24px 72px;
+    padding: 72px 40px 90px;
   }
   .main-page .hero h1 {
-    font-size: 26px;
+    font-size: 36px;
   }
   .main-page .hero p {
+    font-size: 16px;
+  }
+  .main-page .hero-btn {
     font-size: 15px;
+    padding: 14px 36px;
   }
 
   .main-page .section {
-    padding: 48px 24px;
+    padding: 60px 40px;
   }
+  .main-page .section-title {
+    font-size: 24px;
+    margin-bottom: 36px;
+  }
+  /* 태블릿: 2열 */
   .main-page .cards-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
+    gap: 18px;
+    max-width: 720px;
+  }
+  .main-page .card {
+    padding: 30px 20px;
   }
 
   .main-page .phone-section {
-    padding: 48px 24px;
+    padding: 60px 40px;
   }
+  /* 태블릿: 슬라이더 위 / feature 아래 */
   .main-page .phone-wrap {
-    gap: 36px;
+    flex-direction: column;
+    gap: 40px;
   }
-  .main-page .phone-frame {
-    width: min(280px, 80vw);
+  .main-page .slider-img-wrap {
+    width: 280px;
+  }
+  .main-page .slide-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+  .main-page .feature-list {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+  }
+  .main-page .feature-item {
+    justify-content: center;
   }
 
   .main-page .cta-section {
-    padding: 32px 24px;
+    padding: 48px 40px;
   }
   .main-page .cta-banner {
-    padding: 36px 28px;
+    padding: 40px 36px;
   }
   .main-page .cta-banner p {
-    font-size: 16px;
+    font-size: 18px;
+  }
+
+  .main-page footer {
+    font-size: 13px;
+    padding: 24px;
   }
 }
 
-/* 모바일 (480px 이하) */
-@media (max-width: 480px) {
+
+/* ════════════════════════════════
+   모바일 (768px 이하)
+   전체 1열 / 카드 2열 / 슬라이더 세로
+════════════════════════════════ */
+@media (max-width: 768px) {
+  /* NAV */
   .main-page .navbar {
-    padding: 10px 16px;
+    padding: 12px 18px;
+  }
+  .main-page .brain-logo {
+    width: 34px;
+    height: 34px;
   }
   .main-page .logo-text {
     font-size: 17px;
   }
+  .main-page .menu {
+    gap: 2px;
+  }
   .main-page .menu a {
     font-size: 13px;
-    padding: 5px 8px;
+    padding: 5px 10px;
   }
 
+  /* HERO */
   .main-page .hero {
-    padding: 40px 16px 56px;
+    padding: 48px 20px 64px;
   }
   .main-page .hero-badge {
     font-size: 12px;
+    padding: 5px 14px;
   }
   .main-page .hero h1 {
-    font-size: 22px;
+    font-size: 24px;
   }
   .main-page .hero p {
     font-size: 14px;
@@ -437,49 +517,77 @@
     padding: 12px 28px;
   }
 
+  /* CARDS */
   .main-page .section {
-    padding: 36px 16px;
+    padding: 40px 18px;
   }
   .main-page .section-title {
     font-size: 18px;
-    margin-bottom: 24px;
+    margin-bottom: 22px;
   }
+  /* 모바일: 2열 유지 (작은 카드) */
   .main-page .cards-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
+    max-width: 100%;
   }
   .main-page .card {
-    padding: 20px 14px;
+    padding: 20px 12px;
   }
   .main-page .card-icon {
     font-size: 28px;
+    margin-bottom: 10px;
   }
   .main-page .card h3 {
-    font-size: 15px;
+    font-size: 14px;
   }
   .main-page .card p {
-    font-size: 13px;
+    font-size: 12px;
   }
 
+  /* SLIDER */
   .main-page .phone-section {
-    padding: 36px 16px;
+    padding: 40px 18px;
   }
   .main-page .phone-wrap {
     flex-direction: column;
     gap: 28px;
   }
-  .main-page .phone-frame {
-    width: min(260px, 75vw);
+  .main-page .slider-img-wrap {
+    width: 220px;
+  }
+  .main-page .slider-row {
+    gap: 12px;
+  }
+  .main-page .slide-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 16px;
+  }
+  .main-page .slide-dot {
+    width: 7px;
+    height: 7px;
+  }
+  .main-page .slide-dots {
+    gap: 7px;
+  }
+
+  /* feature list */
+  .main-page .feature-list {
+    width: 100%;
+    text-align: center;
   }
   .main-page .feature-list h3 {
     font-size: 20px;
   }
   .main-page .feature-item {
     font-size: 14px;
+    justify-content: center;
   }
 
+  /* CTA */
   .main-page .cta-section {
-    padding: 24px 16px;
+    padding: 28px 18px;
   }
   .main-page .cta-banner {
     padding: 28px 20px;
@@ -487,12 +595,14 @@
   }
   .main-page .cta-banner p {
     font-size: 15px;
+    margin-bottom: 20px;
   }
   .main-page .cta-btn {
     font-size: 14px;
     padding: 11px 26px;
   }
 
+  /* FOOTER */
   .main-page footer {
     font-size: 12px;
     padding: 20px 16px;
