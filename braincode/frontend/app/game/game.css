@@ -1,0 +1,663 @@
+.game-page,
+.game-page * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.game-page {
+  font-family: "Noto Sans KR", sans-serif;
+  background-color: #e8f1fa;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-image:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(74, 126, 199, 0.13) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 85% 75%,
+      rgba(91, 143, 204, 0.1) 0%,
+      transparent 50%
+    );
+}
+
+/* ── 네비게이션 바 ── */
+.game-page .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--blue-dark);
+  padding: 14px 40px;
+  box-shadow: 0 2px 12px rgba(74, 126, 199, 0.25);
+}
+.game-page .nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+}
+.game-page .brain-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+.game-page .logo-text {
+  font-family: "Jua", sans-serif;
+  font-size: 22px;
+  color: white;
+}
+.game-page .nav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.game-page .nav-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  color: white;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 8px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.game-page .nav-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ── 페이지 바디 ── */
+.game-page .page-body {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+  padding: 16px 20px 16px;
+}
+.game-page .page-inner {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.game-page #brainSelectView {
+  display: block;
+}
+.game-page #gameView {
+  display: none;
+}
+
+.game-page .page-hero {
+  text-align: center;
+  margin-bottom: 10px;
+}
+.game-page .page-hero h1 {
+  font-family: "Jua", sans-serif;
+  font-size: 26px;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+.game-page .page-hero p {
+  font-size: 15px;
+  color: var(--text-light);
+}
+
+/* ── 뇌 스테이지 ── */
+.game-page .brain-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1280 / 698;
+  max-height: calc(100vh - 200px);
+  margin: 0 auto;
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(160deg, var(--blue-softest) 0%, #f0f8ff 100%);
+  border: 2px solid var(--blue-pale);
+  box-shadow: 0 8px 32px rgba(74, 126, 199, 0.14);
+}
+.game-page .brain-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 6px 18px rgba(74, 126, 199, 0.15));
+}
+.game-page .brain-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.game-page .region {
+  fill: transparent;
+  cursor: pointer;
+  transition: fill 0.15s;
+}
+
+/* ── 호버 레이블 ── */
+.game-page .brain-label {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.97);
+  border: 2px solid var(--blue-pale);
+  border-radius: 40px;
+  padding: 14px 32px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 6px 24px rgba(74, 126, 199, 0.22);
+  pointer-events: none;
+  white-space: nowrap;
+}
+.game-page .brain-label-name {
+  font-family: "Jua", sans-serif;
+  font-size: 26px;
+  color: var(--blue-dark);
+}
+.game-page .brain-label-desc {
+  font-size: 16px;
+  color: var(--text-mid);
+}
+.game-page .brain-label-hint {
+  font-size: 14px;
+  color: var(--text-light);
+  margin-top: 2px;
+}
+
+/* ── 게임 카드 ── */
+.game-page .game-card {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(20px);
+  border-radius: 28px;
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 16px 48px rgba(58, 107, 181, 0.12),
+    0 4px 16px rgba(58, 107, 181, 0.07);
+  overflow: hidden;
+  animation: cardIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── 작은 헤더 바 ── */
+.game-page .game-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 28px;
+  background: var(--blue-softest);
+  border-bottom: 1.5px solid var(--blue-pale);
+}
+.game-page .game-region-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.game-page .game-region-thumb {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(74, 126, 199, 0.2));
+}
+.game-page .game-region-name {
+  font-family: "Jua", sans-serif;
+  font-size: 20px;
+  color: var(--text-dark);
+}
+
+/* ── 게임 셸 (흰 영역) ── */
+.game-page .game-shell {
+  background: white;
+  padding: 24px 40px 32px;
+  height: calc(100vh - 185px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 게임 내부 타이틀 ── */
+.game-page .game-inner-title {
+  font-family: "Jua", sans-serif;
+  font-size: 30px;
+  color: var(--text-dark);
+  text-align: center;
+  margin-bottom: 10px;
+}
+.game-page .game-inner-sub {
+  font-size: 20px;
+  color: var(--text-mid);
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ── 센터 박스 ── */
+.game-page .center-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+}
+
+/* ── 큰 숫자/단어 ── */
+.game-page .big-number,
+.game-page .big-word {
+  font-family: "Jua", sans-serif;
+  font-size: 72px;
+  color: var(--blue-dark);
+  letter-spacing: 4px;
+  line-height: 1.1;
+}
+
+/* ── 버튼 ── */
+.game-page .btn {
+  border: none;
+  border-radius: 16px;
+  padding: 16px 28px;
+  background: var(--blue-pale);
+  color: var(--text-dark);
+  cursor: pointer;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  transition: 0.18s ease;
+  box-shadow: 0 3px 12px rgba(74, 126, 199, 0.15);
+}
+.game-page .btn:hover {
+  background: var(--blue-light);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(74, 126, 199, 0.28);
+}
+.game-page .btn:active {
+  transform: translateY(0);
+}
+.game-page .btn.strong {
+  background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid));
+  color: white;
+  font-size: 20px;
+  padding: 18px 40px;
+  box-shadow: 0 6px 20px rgba(74, 126, 199, 0.36);
+}
+.game-page .btn.strong:hover {
+  box-shadow: 0 10px 28px rgba(74, 126, 199, 0.46);
+  filter: brightness(1.06);
+}
+.game-page .btn.ghost {
+  background: white;
+  border: 2px solid var(--blue-pale);
+  color: var(--text-mid);
+  font-size: 16px;
+  padding: 12px 22px;
+  box-shadow: none;
+}
+.game-page .btn.ghost:hover {
+  background: var(--blue-softest);
+  border-color: var(--blue-light);
+}
+
+/* ── 입력 ── */
+.game-page .answer-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.game-page .text-input {
+  border: 2.5px solid var(--blue-pale);
+  background: var(--blue-softest);
+  border-radius: 16px;
+  padding: 16px 22px;
+  color: var(--text-dark);
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 22px;
+  outline: none;
+  text-align: center;
+  transition:
+    border-color 0.18s,
+    box-shadow 0.18s;
+  min-width: 180px;
+}
+.game-page .text-input:focus {
+  border-color: var(--blue-mid);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(74, 126, 199, 0.12);
+}
+
+/* ── 퀴즈 그리드 ── */
+.game-page .quiz-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  max-width: 320px;
+  width: 100%;
+}
+.game-page .quiz-cell {
+  aspect-ratio: 1;
+  border: 2.5px solid var(--blue-light);
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--blue-pale), var(--blue-softest));
+  font-size: 38px;
+  cursor: pointer;
+  transition: 0.15s ease;
+  box-shadow: 0 4px 14px rgba(74, 126, 199, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.game-page .quiz-cell:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 10px 24px rgba(74, 126, 199, 0.28);
+  background: linear-gradient(135deg, var(--blue-light), var(--blue-pale));
+}
+.game-page .quiz-cell:active {
+  transform: scale(0.97);
+}
+
+/* ── 비주얼 그리드 ── */
+.game-page .visual-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  max-width: 240px;
+  width: 100%;
+}
+.game-page .visual-card {
+  aspect-ratio: 1;
+  border: 2.5px solid var(--blue-pale);
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 34px;
+  background: white;
+  transition: 0.15s ease;
+  box-shadow: 0 4px 14px rgba(74, 126, 199, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.game-page .visual-card:hover {
+  transform: translateY(-4px) scale(1.05);
+  border-color: var(--blue-light);
+  box-shadow: 0 10px 24px rgba(74, 126, 199, 0.22);
+}
+.game-page .visual-card.selected {
+  background: linear-gradient(135deg, var(--blue-pale), var(--blue-softest));
+  border-color: var(--blue-dark);
+  box-shadow: 0 4px 18px rgba(74, 126, 199, 0.32);
+}
+.game-page .temporal-choice.selected {
+  background: linear-gradient(
+    135deg,
+    var(--blue-pale),
+    var(--blue-softest)
+  ) !important;
+  border-color: var(--blue-dark) !important;
+}
+
+/* ── 반응속도 박스 ── */
+.game-page .reaction-box {
+  width: min(100%, 440px);
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 24px;
+  border: 3px dashed var(--blue-light);
+  background: var(--blue-softest);
+  margin: 0 auto;
+  font-family: "Jua", sans-serif;
+  font-size: 28px;
+  cursor: pointer;
+  color: var(--text-mid);
+  transition: 0.2s ease;
+  user-select: none;
+}
+.game-page .reaction-box:hover {
+  border-color: var(--blue-dark);
+  background: var(--blue-pale);
+}
+
+/* ── 결과 ── */
+.game-page .result-emoji {
+  font-size: 80px;
+  line-height: 1;
+}
+.game-page .result-msg {
+  font-family: "Jua", sans-serif;
+  font-size: 44px;
+  color: var(--text-dark);
+}
+
+/* ── 점수 표시 ── */
+.game-page .score-display {
+  font-family: "Jua", sans-serif;
+  font-size: 18px;
+  color: var(--blue-dark);
+  background: var(--blue-pale);
+  border-radius: 20px;
+  padding: 6px 16px;
+  white-space: nowrap;
+}
+
+.game-page .hidden {
+  display: none !important;
+}
+
+/* ── 모달 ── */
+.game-page .modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 60, 110, 0.38);
+  backdrop-filter: blur(5px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 16px;
+}
+.game-page .modal-backdrop.show {
+  display: flex;
+}
+.game-page .modal {
+  width: min(520px, 96vw);
+  background: white;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 20px 60px rgba(30, 70, 130, 0.22);
+  border: 1.5px solid var(--blue-pale);
+  animation: cardIn 0.28s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+.game-page .modal h3 {
+  font-family: "Jua", sans-serif;
+  font-size: 22px;
+  color: var(--text-dark);
+  margin: 0 0 8px;
+}
+.game-page .modal p {
+  color: var(--text-light);
+  line-height: 1.7;
+  font-size: 15px;
+  margin: 0 0 16px;
+}
+.game-page .modal h4 {
+  font-family: "Jua", sans-serif;
+  color: var(--text-dark);
+  margin: 0 0 14px;
+  font-size: 18px;
+}
+.game-page .modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.game-page .modal-grid {
+  display: grid;
+  gap: 10px;
+}
+.game-page .setting-item {
+  background: var(--blue-softest);
+  border: 1.5px solid var(--blue-pale);
+  border-radius: 14px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 15px;
+  color: var(--text-dark);
+}
+.game-page .setting-item label {
+  font-family: "Jua", sans-serif;
+  font-size: 15px;
+  color: var(--text-dark);
+}
+.game-page .select {
+  border: 1.5px solid var(--blue-pale);
+  background: var(--blue-softest);
+  border-radius: 10px;
+  padding: 8px 12px;
+  color: var(--text-dark);
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 14px;
+  outline: none;
+}
+.game-page .stats-modal {
+  width: min(760px, 96vw) !important;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.game-page .detail-row {
+  background: var(--blue-softest);
+  border: 1.5px solid var(--blue-pale);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 10px;
+}
+.game-page .detail-row-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-family: "Jua", sans-serif;
+  color: var(--text-dark);
+  font-size: 16px;
+}
+.game-page .detail-row-head span:last-child {
+  font-size: 13px;
+  color: var(--text-light);
+  font-family: "Noto Sans KR", sans-serif;
+}
+.game-page .detail-meta {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-light);
+}
+.game-page .detail-meta div {
+  background: white;
+  border-radius: 12px;
+  padding: 10px;
+  border: 1px solid var(--blue-pale);
+  text-align: center;
+}
+.game-page .detail-meta strong {
+  color: var(--blue-dark);
+  display: block;
+  font-size: 17px;
+  margin-top: 4px;
+}
+
+.game-page ::-webkit-scrollbar {
+  width: 6px;
+}
+.game-page ::-webkit-scrollbar-track {
+  background: var(--blue-softest);
+}
+.game-page ::-webkit-scrollbar-thumb {
+  background: var(--blue-light);
+  border-radius: 6px;
+}
+
+@media (max-width: 768px) {
+  .game-page .navbar {
+    padding: 12px 20px;
+  }
+  .game-page .game-shell {
+    padding: 24px 20px 28px;
+  }
+  .game-page .detail-meta {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .game-page .navbar {
+    padding: 10px 14px;
+  }
+  .game-page .logo-text {
+    font-size: 17px;
+  }
+  .game-page .brain-logo {
+    width: 36px;
+    height: 36px;
+  }
+  .game-page .page-body {
+    padding: 18px 12px 36px;
+  }
+  .game-page .page-hero h1 {
+    font-size: 26px;
+  }
+  .game-page .game-shell {
+    padding: 20px 14px 24px;
+  }
+  .game-page .game-inner-title {
+    font-size: 24px;
+  }
+  .game-page .game-inner-sub {
+    font-size: 17px;
+  }
+  .game-page .big-number,
+  .game-page .big-word {
+    font-size: 54px;
+  }
+  .game-page .btn.strong {
+    font-size: 17px;
+    padding: 16px 28px;
+  }
+  .game-page .quiz-cell {
+    font-size: 28px;
+  }
+  .game-page .visual-card {
+    font-size: 32px;
+  }
+}
